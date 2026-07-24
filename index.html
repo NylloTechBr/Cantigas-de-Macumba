@@ -31,6 +31,7 @@
       --font-title: 'Cinzel', serif;
       --font-body: 'Inter', sans-serif;
       --base-font-size: 16px;
+      --lyric-font-size: 1.25rem;
     }
 
     [data-theme="light"] {
@@ -99,6 +100,24 @@
       position: relative;
     }
 
+    /* Sidebar Overlay (Mobile) */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 99;
+      transition: var(--transition);
+    }
+
+    .sidebar-overlay.active {
+      display: block;
+    }
+
     /* Sidebar */
     .sidebar {
       width: 260px;
@@ -108,6 +127,7 @@
       flex-direction: column;
       transition: var(--transition);
       z-index: 100;
+      flex-shrink: 0;
     }
 
     .brand {
@@ -194,6 +214,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      min-width: 0;
     }
 
     .header {
@@ -202,9 +223,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 32px;
+      padding: 0 24px;
       background-color: var(--bg-sidebar);
-      gap: 16px;
+      gap: 12px;
     }
 
     .left-header-controls {
@@ -217,11 +238,13 @@
       display: none;
       font-size: 1.4rem;
       color: var(--text-white);
+      padding: 8px;
     }
 
     .search-bar {
       position: relative;
       width: 320px;
+      max-width: 100%;
     }
 
     .search-bar input {
@@ -253,20 +276,22 @@
 
     .main-content {
       flex: 1;
-      padding: 32px;
+      padding: 28px;
       overflow-y: auto;
       background-color: var(--bg-dark);
     }
 
     /* COMPONENTES REUTILIZÁVEIS */
     .btn {
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 8px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       transition: var(--transition);
+      white-space: nowrap;
     }
 
     .btn-primary {
@@ -297,14 +322,14 @@
 
     .page-title {
       font-family: var(--font-title);
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: var(--gold-primary);
       margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 16px;
     }
 
     .grid-cards {
@@ -352,9 +377,10 @@
     }
 
     .card-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 600;
       margin-bottom: 6px;
+      line-height: 1.4;
     }
 
     .card-subtitle {
@@ -376,7 +402,7 @@
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 16px;
-      padding: 32px;
+      padding: 28px;
       max-width: 700px;
       margin: 0 auto;
       box-shadow: var(--card-shadow);
@@ -409,15 +435,15 @@
     }
 
     textarea.form-control {
-      min-height: 160px;
+      min-height: 180px;
       resize: vertical;
     }
 
     /* ESTATÍSTICAS */
     .stats-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
       margin-bottom: 32px;
     }
 
@@ -437,7 +463,7 @@
     }
 
     .stat-val {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 700;
     }
 
@@ -446,7 +472,7 @@
       font-size: 0.85rem;
     }
 
-    /* VISUALIZADOR DE CANTIGA */
+    /* VISUALIZADOR DE CANTIGA COM LEITURA MELHORADA */
     .cantiga-view {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -454,17 +480,45 @@
       padding: 32px;
       max-width: 800px;
       margin: 0 auto;
+      transition: var(--transition);
+    }
+
+    .cantiga-view.focus-mode {
+      background-color: #050505;
+      border-color: var(--gold-primary);
+      padding: 40px;
+    }
+
+    .cantiga-controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--bg-dark);
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .font-size-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .cantiga-lyric {
-      font-size: 1.15rem;
-      line-height: 1.8;
+      font-size: var(--lyric-font-size);
+      line-height: 1.9;
+      letter-spacing: 0.3px;
       white-space: pre-wrap;
-      margin: 24px 0;
-      padding: 20px;
+      margin: 20px 0;
+      padding: 24px;
       background-color: var(--bg-dark);
-      border-radius: 8px;
-      border-left: 4px solid var(--gold-primary);
+      border-radius: 12px;
+      border-left: 5px solid var(--gold-primary);
+      font-weight: 400;
     }
 
     /* IMPRESSÃO / EXPORTAÇÃO PDF */
@@ -518,12 +572,14 @@
       }
     }
 
-    /* RESPONSIVIDADE */
-    @media (max-width: 768px) {
+    /* RESPONSIVIDADE E AJUSTES MOBILE */
+    @media (max-width: 820px) {
       .sidebar {
-        position: absolute;
-        left: -260px;
-        height: 100%;
+        position: fixed;
+        left: -270px;
+        top: 0;
+        height: 100vh;
+        box-shadow: 4px 0 16px rgba(0, 0, 0, 0.4);
       }
       .sidebar.open {
         left: 0;
@@ -535,7 +591,7 @@
         padding: 0 16px;
       }
       .search-bar {
-        width: 180px;
+        width: 100%;
       }
       .main-content {
         padding: 16px;
@@ -543,12 +599,36 @@
       .grid-cards {
         grid-template-columns: 1fr;
       }
+      .cantiga-view {
+        padding: 20px;
+      }
+      .cantiga-lyric {
+        padding: 16px;
+      }
+      .form-container {
+        padding: 20px;
+      }
+      .btn-text-mobile-hide {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-title {
+        font-size: 1.3rem;
+      }
+      .header-actions .btn {
+        padding: 8px 12px;
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="app-container">
+    <!-- OVERLAY PARA MOBILE -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
       <div class="brand">
@@ -597,9 +677,9 @@
       <!-- HEADER -->
       <header class="header">
         <div class="left-header-controls">
-          <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+          <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu"><i class="fa-solid fa-bars"></i></button>
           <button class="btn btn-secondary" id="globalBackBtn" onclick="window.goBack()" style="display: none;" title="Voltar para a página anterior">
-            <i class="fa-solid fa-arrow-left"></i> <span class="btn-text">Voltar</span>
+            <i class="fa-solid fa-arrow-left"></i> <span class="btn-text-mobile-hide">Voltar</span>
           </button>
         </div>
         <div class="search-bar">
@@ -607,7 +687,9 @@
           <input type="text" id="globalSearch" placeholder="Pesquisar ponto, letra ou tag...">
         </div>
         <div class="header-actions">
-          <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga')"><i class="fa-solid fa-plus"></i> Novo Ponto</button>
+          <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga')">
+            <i class="fa-solid fa-plus"></i> <span class="btn-text-mobile-hide">Novo Ponto</span>
+          </button>
         </div>
       </header>
 
@@ -649,14 +731,17 @@
       cantigas: [],
       settings: JSON.parse(localStorage.getItem('umbanda_settings')) || { theme: 'dark', fontSize: '16px', mainColor: '#d4af37' },
       currentPage: 'home',
-      previousPage: null,
-      previousCategoryFilter: null,
       currentCategoryFilter: null,
       currentCantigaId: null,
       editingCantigaId: null,
       editingCategoryId: null,
-      searchTerm: ''
+      searchTerm: '',
+      lyricFontSizeRem: 1.25,
+      isFocusMode: false
     };
+
+    // Pilha de navegação (Histórico robusto)
+    let pageHistory = [];
 
     /* ==========================================
        CONEXÃO EM TEMPO REAL (FIREBASE LISTENERS)
@@ -696,6 +781,7 @@
     function applySettings() {
       document.body.setAttribute('data-theme', state.settings.theme);
       document.documentElement.style.setProperty('--base-font-size', state.settings.fontSize);
+      document.documentElement.style.setProperty('--lyric-font-size', `${state.lyricFontSizeRem}rem`);
       if (state.settings.mainColor) {
         document.documentElement.style.setProperty('--gold-primary', state.settings.mainColor);
       }
@@ -721,10 +807,14 @@
     /* ==========================================
        NAVEGAÇÃO E RENDERIZAÇÃO
        ========================================== */
-    window.navigateTo = function(page, categoryId = null) {
-      if (state.currentPage !== page || state.currentCategoryFilter !== categoryId) {
-        state.previousPage = state.currentPage;
-        state.previousCategoryFilter = state.currentCategoryFilter;
+    window.navigateTo = function(page, categoryId = null, recordHistory = true) {
+      // Registrar no histórico se for navegação normal
+      if (recordHistory && (state.currentPage !== page || state.currentCategoryFilter !== categoryId)) {
+        pageHistory.push({
+          page: state.currentPage,
+          categoryId: state.currentCategoryFilter,
+          cantigaId: state.currentCantigaId
+        });
       }
 
       state.currentPage = page;
@@ -739,22 +829,29 @@
         el.classList.toggle('active', el.dataset.page === page);
       });
 
+      // Se for para outra página, sai do Modo Foco
+      if (page !== 'view-cantiga') {
+        state.isFocusMode = false;
+      }
+
+      closeMobileMenu();
       render();
     };
 
     window.goBack = function() {
-      if (state.previousPage) {
-        const targetPage = state.previousPage;
-        const targetCategory = state.previousCategoryFilter;
-        
-        state.previousPage = null;
-        state.previousCategoryFilter = null;
-        
-        window.navigateTo(targetPage, targetCategory);
+      if (pageHistory.length > 0) {
+        const previousState = pageHistory.pop();
+        state.currentCantigaId = previousState.cantigaId;
+        window.navigateTo(previousState.page, previousState.categoryId, false);
       } else {
-        window.navigateTo('home');
+        window.navigateTo('home', null, false);
       }
     };
+
+    function closeMobileMenu() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+    }
 
     const mainContent = document.getElementById('mainContent');
 
@@ -763,7 +860,7 @@
 
       const globalBackBtn = document.getElementById('globalBackBtn');
       if (globalBackBtn) {
-        if (state.currentPage !== 'home' && state.previousPage !== null) {
+        if (pageHistory.length > 0 || state.currentPage !== 'home') {
           globalBackBtn.style.display = 'inline-flex';
         } else {
           globalBackBtn.style.display = 'none';
@@ -838,23 +935,23 @@
       `;
     }
 
-  // --- CATEGORIAS ---
-function renderCategories() {
-  const mainCategories = state.categories.filter(c => !c.parentId);
+    // --- CATEGORIAS ---
+    function renderCategories() {
+      const mainCategories = state.categories.filter(c => !c.parentId);
 
-  mainContent.innerHTML = `
-    <div class="page-title">
-      <h2>Categorias</h2>
-      <button class="btn btn-primary" onclick="window.navigateTo('add-category')">
-        <i class="fa-solid fa-plus"></i> Nova Categoria / Subcategoria
-      </button>
-    </div>
-    ${mainCategories.length === 0 ? '<p style="color: var(--text-muted);">Nenhuma categoria cadastrada.</p>' : ''}
-    <div class="grid-cards">
-      ${mainCategories.map(cat => renderCategoryCardHtml(cat)).join('')}
-    </div>
-  `;
-}
+      mainContent.innerHTML = `
+        <div class="page-title">
+          <h2>Categorias</h2>
+          <button class="btn btn-primary" onclick="window.navigateTo('add-category')">
+            <i class="fa-solid fa-plus"></i> Nova Categoria
+          </button>
+        </div>
+        ${mainCategories.length === 0 ? '<p style="color: var(--text-muted);">Nenhuma categoria cadastrada.</p>' : ''}
+        <div class="grid-cards">
+          ${mainCategories.map(cat => renderCategoryCardHtml(cat)).join('')}
+        </div>
+      `;
+    }
 
     function renderCategoryCardHtml(cat) {
       const subCatIds = state.categories.filter(c => c.parentId === cat.id).map(c => c.id);
@@ -870,8 +967,8 @@ function renderCategories() {
                 <i class="fa-solid ${cat.icon}"></i>
               </div>
               <div onclick="event.stopPropagation();">
-                <button onclick="window.editCategory('${cat.id}')" style="color: var(--text-muted); margin-right: 8px;"><i class="fa-solid fa-pen"></i></button>
-                <button onclick="window.deleteCategory('${cat.id}')" style="color: var(--red-dark);"><i class="fa-solid fa-trash"></i></button>
+                <button onclick="window.editCategory('${cat.id}')" style="color: var(--text-muted); margin-right: 8px;" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="window.deleteCategory('${cat.id}')" style="color: var(--red-dark);" title="Excluir"><i class="fa-solid fa-trash"></i></button>
               </div>
             </div>
             <div class="card-title">${cat.name}</div>
@@ -884,7 +981,6 @@ function renderCategories() {
     }
 
     // --- DETALHE DA CATEGORIA ---
-// --- DETALHE DA CATEGORIA ---
     function renderCategoryDetail(catId) {
       const category = state.categories.find(c => c.id === catId);
       if(!category) return window.navigateTo('categories');
@@ -897,20 +993,19 @@ function renderCategories() {
 
       mainContent.innerHTML = `
         <div class="page-title">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <button class="btn btn-secondary" onclick="window.goBack()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-            <i class="fa-solid ${category.icon}" style="color: ${category.color}"></i>
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <i class="fa-solid ${category.icon}" style="color: ${category.color}; font-size: 1.5rem;"></i>
             <h2>${category.name}</h2>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn btn-secondary" onclick="window.exportCategoryToPDF('${catId}')"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
-            <button class="btn btn-secondary" onclick="window.navigateTo('add-category', '${catId}')"><i class="fa-solid fa-folder-plus"></i> Criar Subcategoria</button>
-            <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga', '${catId}')"><i class="fa-solid fa-plus"></i> Adicionar Ponto</button>
+            <button class="btn btn-secondary" onclick="window.exportCategoryToPDF('${catId}')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+            <button class="btn btn-secondary" onclick="window.navigateTo('add-category', '${catId}')"><i class="fa-solid fa-folder-plus"></i> + Subcategoria</button>
+            <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga', '${catId}')"><i class="fa-solid fa-plus"></i> + Ponto</button>
           </div>
         </div>
 
         ${subcategories.length > 0 ? `
-          <h3 style="margin-bottom: 16px; font-family: var(--font-title); color: var(--gold-primary);">Subcategorias de ${category.name}</h3>
+          <h3 style="margin-bottom: 16px; font-family: var(--font-title); color: var(--gold-primary);">Subcategorias</h3>
           <div class="grid-cards" style="margin-bottom: 32px;">
             ${subcategories.map(sc => renderCategoryCardHtml(sc)).join('')}
           </div>
@@ -982,7 +1077,6 @@ function renderCategories() {
       mainContent.innerHTML = `
         <div class="page-title">
           <h2>${cantigaToEdit ? 'Editar Ponto' : 'Criar Novo Ponto'}</h2>
-          <button class="btn btn-secondary" onclick="window.goBack()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
         </div>
         <div class="form-container">
           <form id="standaloneFormCantiga">
@@ -1065,14 +1159,11 @@ function renderCategories() {
        ========================================== */
     function renderAddCategory() {
       const catToEdit = state.editingCategoryId ? state.categories.find(c => c.id === state.editingCategoryId) : null;
-      
-      // Auto-seleciona a categoria pai caso estejamos dentro de uma visualização de categoria
       const targetParentId = catToEdit ? catToEdit.parentId : state.currentCategoryFilter;
 
       mainContent.innerHTML = `
         <div class="page-title">
-          <h2>${catToEdit ? 'Editar Categoria' : 'Criar Nova Categoria / Subcategoria'}</h2>
-          <button class="btn btn-secondary" onclick="window.goBack()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+          <h2>${catToEdit ? 'Editar Categoria' : 'Criar Categoria / Subcategoria'}</h2>
         </div>
         <div class="form-container">
           <form id="standaloneFormCategory">
@@ -1188,27 +1279,39 @@ function renderCategories() {
       }, 0);
     }
 
-    // --- VISUALIZAR CANTIGA ---
+    // --- VISUALIZAR CANTIGA (COM OTIMIZAÇÃO DE LEITURA) ---
     function renderCantigaView(cantigaId) {
       const cantiga = state.cantigas.find(c => c.id === cantigaId);
       if(!cantiga) return window.navigateTo('home');
 
       mainContent.innerHTML = `
-        <div style="margin-bottom: 20px;">
-          <button class="btn btn-secondary" onclick="window.goBack()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-        </div>
-        <div class="cantiga-view">
+        <div class="cantiga-view ${state.isFocusMode ? 'focus-mode' : ''}">
+          <!-- BARRA DE FERRAMENTAS DE LEITURA -->
+          <div class="cantiga-controls-bar">
+            <div class="font-size-controls">
+              <span style="font-size: 0.85rem; color: var(--text-muted); font-weight:600;">Tamanho do Texto:</span>
+              <button class="btn btn-secondary" onclick="window.changeLyricFontSize(-0.1)" title="Diminuir texto" style="padding: 4px 10px;"><i class="fa-solid fa-minus"></i></button>
+              <button class="btn btn-secondary" onclick="window.changeLyricFontSize(0.1)" title="Aumentar texto" style="padding: 4px 10px;"><i class="fa-solid fa-plus"></i></button>
+              <button class="btn btn-secondary" onclick="window.resetLyricFontSize()" title="Restaurar tamanho" style="padding: 4px 10px; font-size:0.8rem;">Reset</button>
+            </div>
+            <div>
+              <button class="btn ${state.isFocusMode ? 'btn-primary' : 'btn-secondary'}" onclick="window.toggleFocusMode()" style="padding: 6px 12px; font-size: 0.85rem;">
+                <i class="fa-solid ${state.isFocusMode ? 'fa-compress' : 'fa-expand'}"></i> ${state.isFocusMode ? 'Sair do Modo Foco' : 'Modo Foco'}
+              </button>
+            </div>
+          </div>
+
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 16px;">
             <div>
               <span class="tag">${getCantigaCategoryName(cantiga.categoryId)}</span>
               <h2 style="font-family: var(--font-title); color: var(--gold-primary); font-size: 2rem; margin-top: 8px;">${cantiga.title}</h2>
             </div>
-            <button onclick="window.toggleFavorite('${cantiga.id}')" style="font-size: 1.5rem; color: ${cantiga.favorite ? 'var(--gold-primary)' : 'var(--text-muted)'}">
+            <button onclick="window.toggleFavorite('${cantiga.id}')" style="font-size: 1.6rem; color: ${cantiga.favorite ? 'var(--gold-primary)' : 'var(--text-muted)'}" title="Favoritar">
               <i class="${cantiga.favorite ? 'fa-solid' : 'fa-regular'} fa-star"></i>
             </button>
           </div>
 
-          <div style="font-size: 0.85rem; color: var(--text-muted); display:flex; gap: 16px; margin-bottom: 16px;">
+          <div style="font-size: 0.85rem; color: var(--text-muted); display:flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;">
             <span><i class="fa-regular fa-calendar"></i> Cadastrado em: ${formatDate(cantiga.createdAt)}</span>
             ${cantiga.updatedAt ? `<span><i class="fa-solid fa-rotate"></i> Atualizado em: ${formatDate(cantiga.updatedAt)}</span>` : ''}
           </div>
@@ -1223,15 +1326,31 @@ function renderCategories() {
 
           ${cantiga.notes ? `<p style="font-style: italic; color: var(--text-muted); margin-bottom: 24px;"><strong>Obs:</strong> ${cantiga.notes}</p>` : ''}
 
-          <div style="display:flex; gap: 12px; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 20px;">
+          <div style="display:flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 20px;">
             <button class="btn btn-primary" onclick="window.editCantiga('${cantiga.id}')"><i class="fa-solid fa-pen"></i> Editar</button>
-            <button class="btn btn-secondary" onclick="window.copyToClipboard(\`${cantiga.lyrics.replace(/`/g, '\\`')}\`)"><i class="fa-solid fa-copy"></i> Copiar Letra</button>
+            <button class="btn btn-secondary" onclick="window.copyToClipboard(\`${cantiga.lyrics.replace(/`/g, '\\`')}\`)"><i class="fa-solid fa-copy"></i> Copiar</button>
             <button class="btn btn-secondary" onclick="window.printCantiga('${cantiga.id}')"><i class="fa-solid fa-print"></i> Imprimir</button>
             <button class="btn btn-secondary" onclick="window.shareCantiga('${cantiga.id}')"><i class="fa-solid fa-share-nodes"></i> Compartilhar</button>
           </div>
         </div>
       `;
     }
+
+    // AJUSTES DINÂMICOS DE LEITURA
+    window.changeLyricFontSize = function(delta) {
+      state.lyricFontSizeRem = Math.max(0.9, Math.min(2.5, state.lyricFontSizeRem + delta));
+      applySettings();
+    };
+
+    window.resetLyricFontSize = function() {
+      state.lyricFontSizeRem = 1.25;
+      applySettings();
+    };
+
+    window.toggleFocusMode = function() {
+      state.isFocusMode = !state.isFocusMode;
+      render();
+    };
 
     // --- PESQUISA ---
     function renderSearchResults() {
@@ -1298,12 +1417,11 @@ function renderCategories() {
             </select>
           </div>
           <div class="form-group">
-            <label>Tamanho da Fonte das Cantigas</label>
+            <label>Tamanho Padrão da Interface</label>
             <select class="form-control" id="fontSizeSelect">
               <option value="14px" ${state.settings.fontSize === '14px' ? 'selected' : ''}>Pequena</option>
               <option value="16px" ${state.settings.fontSize === '16px' ? 'selected' : ''}>Média (Padrão)</option>
               <option value="18px" ${state.settings.fontSize === '18px' ? 'selected' : ''}>Grande</option>
-              <option value="20px" ${state.settings.fontSize === '20px' ? 'selected' : ''}>Extra Grande</option>
             </select>
           </div>
           <div class="form-group">
@@ -1525,13 +1643,18 @@ function renderCategories() {
         item.addEventListener('click', () => {
           const page = item.dataset.page;
           window.navigateTo(page);
-          document.getElementById('sidebar').classList.remove('open');
         });
       });
 
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+
       document.getElementById('menuToggle').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('open');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
       });
+
+      overlay.addEventListener('click', closeMobileMenu);
 
       document.getElementById('globalSearch').addEventListener('input', (e) => {
         state.searchTerm = e.target.value;
