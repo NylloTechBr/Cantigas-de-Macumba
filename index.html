@@ -488,7 +488,7 @@
       display: none;
     }
 
-    /* ESTILO DE IMPRESSÃO / EXPORTAÇÃO PDF CORRIGIDO */
+    /* ESTILO DE IMPRESSÃO / EXPORTAÇÃO PDF */
     @media print {
       body {
         background: #ffffff !important;
@@ -981,13 +981,17 @@
       `;
     }
 
-    // --- DETALHE DA CATEGORIA E SUBCATEGORIAS ---
+    // --- DETALHE DA CATEGORIA E SUBCATEGORIAS (ATUALIZADO) ---
     function renderCategoryDetail(catId) {
       const category = state.categories.find(c => c.id === catId);
       if(!category) return navigateTo('categories');
 
       const subcategories = state.categories.filter(c => c.parentId === catId);
-      const cantigas = state.cantigas.filter(c => c.categoryId === catId);
+      const subCatIds = subcategories.map(c => c.id);
+
+      // Inclui a categoria atual + todas as suas subcategorias para exibir os pontos reunidos
+      const allCategoryIds = [catId, ...subCatIds];
+      const cantigas = state.cantigas.filter(c => allCategoryIds.includes(c.categoryId));
 
       mainContent.innerHTML = `
         <div class="page-title">
@@ -1010,7 +1014,7 @@
         ` : ''}
         
         <h3 style="margin-bottom: 16px; font-family: var(--font-title); color: var(--gold-primary);">Pontos em ${category.name}</h3>
-        ${cantigas.length === 0 ? '<p style="color: var(--text-muted); margin-bottom: 24px;">Nenhum ponto cadastrado diretamente nesta categoria.</p>' : ''}
+        ${cantigas.length === 0 ? '<p style="color: var(--text-muted); margin-bottom: 24px;">Nenhum ponto encontrado nesta categoria ou subcategorias.</p>' : ''}
         
         <div class="grid-cards">
           ${cantigas.map(c => renderCantigaCardHtml(c)).join('')}
@@ -1221,7 +1225,7 @@
        OPERAÇÕES FIREBASE (CRUD) & EXPORTAÇÃO PDF
        ========================================== */
 
-    // MODAL CATEGORIA (CORRIGIDO)
+    // MODAL CATEGORIA
     const modalCategory = document.getElementById('modalCategory');
     window.openModalCategory = function(catId = null, isSubcategoryOf = false) {
       const form = document.getElementById('formCategory');
@@ -1229,16 +1233,14 @@
       
       const parentSelect = document.getElementById('catParentId');
       
-      // 1. Descobrir qual deve ser o ID pai pré-selecionado
       let selectedParentId = "";
       if (catId && isSubcategoryOf) {
-        selectedParentId = catId; // Criando subcategoria DENTRO da categoria atual
+        selectedParentId = catId;
       } else if (catId && !isSubcategoryOf) {
         const currentCat = state.categories.find(c => c.id === catId);
         selectedParentId = currentCat ? (currentCat.parentId || "") : "";
       }
 
-      // 2. Montar as opções com TODAS as categorias ativas
       let optionsHTML = `<option value="">Nenhuma (Categoria Principal)</option>`;
       
       state.categories.forEach(c => {
@@ -1250,7 +1252,6 @@
 
       parentSelect.innerHTML = optionsHTML;
 
-      // 3. Preencher o formulário conforme o contexto
       if (catId && !isSubcategoryOf) {
         const cat = state.categories.find(c => c.id === catId);
         document.getElementById('catId').value = cat.id;
@@ -1306,7 +1307,7 @@
       }
     };
 
-    // EXPORTAR CATEGORIA EM PDF (CORRIGIDO)
+    // EXPORTAR CATEGORIA EM PDF
     window.exportCategoryToPDF = function(catId) {
       const category = state.categories.find(c => c.id === catId);
       if(!category) return;
