@@ -204,6 +204,13 @@
       justify-content: space-between;
       padding: 0 32px;
       background-color: var(--bg-sidebar);
+      gap: 16px;
+    }
+
+    .left-header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .menu-toggle {
@@ -589,7 +596,12 @@
     <div class="main-wrapper">
       <!-- HEADER -->
       <header class="header">
-        <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="left-header-controls">
+          <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+          <button class="btn btn-secondary" id="globalBackBtn" onclick="window.goBack()" style="display: none;" title="Voltar para a página anterior">
+            <i class="fa-solid fa-arrow-left"></i> <span class="btn-text">Voltar</span>
+          </button>
+        </div>
         <div class="search-bar">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" id="globalSearch" placeholder="Pesquisar ponto, letra ou tag...">
@@ -637,7 +649,8 @@
       cantigas: [],
       settings: JSON.parse(localStorage.getItem('umbanda_settings')) || { theme: 'dark', fontSize: '16px', mainColor: '#d4af37' },
       currentPage: 'home',
-      previousPage: 'home',
+      previousPage: null,
+      previousCategoryFilter: null,
       currentCategoryFilter: null,
       currentCantigaId: null,
       editingCantigaId: null,
@@ -709,9 +722,13 @@
        NAVEGAÇÃO E RENDERIZAÇÃO
        ========================================== */
     window.navigateTo = function(page, categoryId = null) {
-      state.previousPage = state.currentPage;
+      if (state.currentPage !== page || state.currentCategoryFilter !== categoryId) {
+        state.previousPage = state.currentPage;
+        state.previousCategoryFilter = state.currentCategoryFilter;
+      }
+
       state.currentPage = page;
-      if (categoryId !== null || page !== 'add-cantiga') {
+      if (categoryId !== null || (page !== 'add-cantiga' && page !== 'add-category')) {
         state.currentCategoryFilter = categoryId;
       }
 
@@ -726,8 +743,14 @@
     };
 
     window.goBack = function() {
-      if (state.previousPage && state.previousPage !== 'view-cantiga') {
-        window.navigateTo(state.previousPage, state.currentCategoryFilter);
+      if (state.previousPage) {
+        const targetPage = state.previousPage;
+        const targetCategory = state.previousCategoryFilter;
+        
+        state.previousPage = null;
+        state.previousCategoryFilter = null;
+        
+        window.navigateTo(targetPage, targetCategory);
       } else {
         window.navigateTo('home');
       }
@@ -737,6 +760,15 @@
 
     function render() {
       applySettings();
+
+      const globalBackBtn = document.getElementById('globalBackBtn');
+      if (globalBackBtn) {
+        if (state.currentPage !== 'home' && state.previousPage !== null) {
+          globalBackBtn.style.display = 'inline-flex';
+        } else {
+          globalBackBtn.style.display = 'none';
+        }
+      }
 
       if (state.searchTerm.trim() !== '') {
         renderSearchResults();
@@ -806,21 +838,23 @@
       `;
     }
 
-    // --- CATEGORIAS ---
-    function renderCategories() {
-      const mainCategories = state.categories.filter(c => !c.parentId);
+  // --- CATEGORIAS ---
+function renderCategories() {
+  const mainCategories = state.categories.filter(c => !c.parentId);
 
-      mainContent.innerHTML = `
-        <div class="page-title">
-          <h2>Categorias</h2>
-          <button class="btn btn-primary" onclick="window.navigateTo('add-category')"><i class="fa-solid fa-plus"></i> Nova Categoria / Subcategoria</button>
-        </div>
-        ${mainCategories.length === 0 ? '<p style="color: var(--text-muted);">Nenhuma categoria cadastrada.</p>' : ''}
-        <div class="grid-cards">
-          ${mainCategories.map(cat => renderCategoryCardHtml(cat)).join('')}
-        </div>
-      `;
-    }
+  mainContent.innerHTML = `
+    <div class="page-title">
+      <h2>Categorias</h2>
+      <button class="btn btn-primary" onclick="window.navigateTo('add-category')">
+        <i class="fa-solid fa-plus"></i> Nova Categoria / Subcategoria
+      </button>
+    </div>
+    ${mainCategories.length === 0 ? '<p style="color: var(--text-muted);">Nenhuma categoria cadastrada.</p>' : ''}
+    <div class="grid-cards">
+      ${mainCategories.map(cat => renderCategoryCardHtml(cat)).join('')}
+    </div>
+  `;
+}
 
     function renderCategoryCardHtml(cat) {
       const subCatIds = state.categories.filter(c => c.parentId === cat.id).map(c => c.id);
@@ -850,6 +884,7 @@
     }
 
     // --- DETALHE DA CATEGORIA ---
+// --- DETALHE DA CATEGORIA ---
     function renderCategoryDetail(catId) {
       const category = state.categories.find(c => c.id === catId);
       if(!category) return window.navigateTo('categories');
@@ -863,12 +898,14 @@
       mainContent.innerHTML = `
         <div class="page-title">
           <div style="display:flex; align-items:center; gap:12px;">
+            <button class="btn btn-secondary" onclick="window.goBack()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
             <i class="fa-solid ${category.icon}" style="color: ${category.color}"></i>
             <h2>${category.name}</h2>
           </div>
-          <div style="display:flex; gap:10px;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-secondary" onclick="window.exportCategoryToPDF('${catId}')"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
-            <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga')"><i class="fa-solid fa-plus"></i> Adicionar Ponto</button>
+            <button class="btn btn-secondary" onclick="window.navigateTo('add-category', '${catId}')"><i class="fa-solid fa-folder-plus"></i> Criar Subcategoria</button>
+            <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga', '${catId}')"><i class="fa-solid fa-plus"></i> Adicionar Ponto</button>
           </div>
         </div>
 
@@ -945,6 +982,7 @@
       mainContent.innerHTML = `
         <div class="page-title">
           <h2>${cantigaToEdit ? 'Editar Ponto' : 'Criar Novo Ponto'}</h2>
+          <button class="btn btn-secondary" onclick="window.goBack()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
         </div>
         <div class="form-container">
           <form id="standaloneFormCantiga">
@@ -977,7 +1015,7 @@
             </div>
 
             <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px;">
-              <button type="button" class="btn btn-secondary" onclick="window.navigateTo('home')">Cancelar</button>
+              <button type="button" class="btn btn-secondary" onclick="window.goBack()">Cancelar</button>
               <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar Ponto</button>
             </div>
           </form>
@@ -1016,7 +1054,7 @@
             }
 
             state.editingCantigaId = null;
-            window.navigateTo('home');
+            window.goBack();
           };
         }
       }, 0);
@@ -1027,10 +1065,14 @@
        ========================================== */
     function renderAddCategory() {
       const catToEdit = state.editingCategoryId ? state.categories.find(c => c.id === state.editingCategoryId) : null;
+      
+      // Auto-seleciona a categoria pai caso estejamos dentro de uma visualização de categoria
+      const targetParentId = catToEdit ? catToEdit.parentId : state.currentCategoryFilter;
 
       mainContent.innerHTML = `
         <div class="page-title">
           <h2>${catToEdit ? 'Editar Categoria' : 'Criar Nova Categoria / Subcategoria'}</h2>
+          <button class="btn btn-secondary" onclick="window.goBack()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
         </div>
         <div class="form-container">
           <form id="standaloneFormCategory">
@@ -1045,7 +1087,7 @@
                 <option value="">Nenhuma (Categoria Principal)</option>
                 ${state.categories
                   .filter(c => !catToEdit || c.id !== catToEdit.id)
-                  .map(c => `<option value="${c.id}" ${catToEdit && catToEdit.parentId === c.id ? 'selected' : ''}>${c.parentId ? '— ' : ''}${c.name}</option>`)
+                  .map(c => `<option value="${c.id}" ${targetParentId === c.id ? 'selected' : ''}>${c.parentId ? '— ' : ''}${c.name}</option>`)
                   .join('')
                 }
               </select>
@@ -1053,66 +1095,54 @@
 
             <div class="form-group">
               <label>Ícone Representativo</label>
- <select id="catIcon" class="form-control">
-  <option value="fa-water">Água</option>
-  <option value="fa-ring">Aliança</option>
-  <option value="fa-anchor">Âncora</option>
-  <option value="fa-tree">Árvore</option>
-  <option value="fa-drum">Atabaque</option>
-  <option value="fa-compass">Bússola</option>
-  <option value="fa-smoking">Cachimbo / Charuto</option>
-  <option value="fa-fire-burner">Caldeirão</option>
-  <option value="fa-horse-head">Cavalo</option>
-  <option value="fa-skull">Caveira</option>
-
-  <option value="fa-hat-cowboy">Chapéu</option>
-  <option value="fa-key">Chave</option>
-  <option value="fa-child">Criança</option>
-  <option value="fa-gem">Cristal</option>
-  <option value="fa-cross">Cruz</option>
-
-  <option value="fa-shield-halved">Escudo</option>
-  <option value="fa-sword">Espada</option>
-  <option value="fa-star">Estrela</option>
-  <option value="fa-star-and-crescent">Estrela e Lua</option>
-
-  <option value="fa-fire">Fogo</option>
-  <option value="fa-spa">Folha</option>
-  <option value="fa-flask">Garrafa</option>
-  <option value="fa-droplet">Gota</option>
-
-  <option value="fa-fan">Leque</option>
-  <option value="fa-book">Livro</option>
-  <option value="fa-moon">Lua</option>
-
-  <option value="fa-hands-holding-child">Mãos</option>
-  <option value="fa-hands-praying">Mãos em Oração</option>
-
-  <option value="fa-masks-theater">Máscara</option>
-  <option value="fa-wand-magic-sparkles">Mironga</option>
-  <option value="fa-coins">Moedas</option>
-
-  <option value="fa-eye">Olho</option>
-
-  <option value="fa-mountain">Pedreira</option>
-  <option value="fa-feather">Pena</option>
-  <option value="fa-circle-dot">Ponto Rabiscado</option>
-  <option value="fa-door-open">Porta</option>
-
-  <option value="fa-bolt">Raio</option>
-  <option value="fa-dharmachakra">Roda</option>
-
-  <option value="fa-bell">Sineta</option>
-  <option value="fa-sun">Sol</option>
-
-  <option value="fa-wine-glass">Taça</option>
-  <option value="fa-house-chimney-window">Terreiro</option>
-  <option value="fa-clover">Trevo</option>
-  <option value="fa-wheat-awn">Trigo</option>
-
-  <option value="fa-broom">Vassoura</option>
-  <option value="fa-wind">Vento</option>
-</select>
+              <select id="catIcon" class="form-control">
+                <option value="fa-water">Água</option>
+                <option value="fa-ring">Aliança</option>
+                <option value="fa-anchor">Âncora</option>
+                <option value="fa-tree">Árvore</option>
+                <option value="fa-drum">Atabaque</option>
+                <option value="fa-compass">Bússola</option>
+                <option value="fa-smoking">Cachimbo / Charuto</option>
+                <option value="fa-fire-burner">Caldeirão</option>
+                <option value="fa-horse-head">Cavalo</option>
+                <option value="fa-skull">Caveira</option>
+                <option value="fa-hat-cowboy">Chapéu</option>
+                <option value="fa-key">Chave</option>
+                <option value="fa-child">Criança</option>
+                <option value="fa-gem">Cristal</option>
+                <option value="fa-cross">Cruz</option>
+                <option value="fa-shield-halved">Escudo</option>
+                <option value="fa-sword">Espada</option>
+                <option value="fa-star">Estrela</option>
+                <option value="fa-star-and-crescent">Estrela e Lua</option>
+                <option value="fa-fire">Fogo</option>
+                <option value="fa-spa">Folha</option>
+                <option value="fa-flask">Garrafa</option>
+                <option value="fa-droplet">Gota</option>
+                <option value="fa-fan">Leque</option>
+                <option value="fa-book">Livro</option>
+                <option value="fa-moon">Lua</option>
+                <option value="fa-hands-holding-child">Mãos</option>
+                <option value="fa-hands-praying">Mãos em Oração</option>
+                <option value="fa-masks-theater">Máscara</option>
+                <option value="fa-wand-magic-sparkles">Mironga</option>
+                <option value="fa-coins">Moedas</option>
+                <option value="fa-eye">Olho</option>
+                <option value="fa-mountain">Pedreira</option>
+                <option value="fa-feather">Pena</option>
+                <option value="fa-circle-dot">Ponto Rabiscado</option>
+                <option value="fa-door-open">Porta</option>
+                <option value="fa-bolt">Raio</option>
+                <option value="fa-dharmachakra">Roda</option>
+                <option value="fa-bell">Sineta</option>
+                <option value="fa-sun">Sol</option>
+                <option value="fa-wine-glass">Taça</option>
+                <option value="fa-house-chimney-window">Terreiro</option>
+                <option value="fa-clover">Trevo</option>
+                <option value="fa-wheat-awn">Trigo</option>
+                <option value="fa-broom">Vassoura</option>
+                <option value="fa-wind">Vento</option>
+              </select>
             </div>
 
             <div class="form-group">
@@ -1121,7 +1151,7 @@
             </div>
 
             <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px;">
-              <button type="button" class="btn btn-secondary" onclick="window.navigateTo('categories')">Cancelar</button>
+              <button type="button" class="btn btn-secondary" onclick="window.goBack()">Cancelar</button>
               <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar Categoria</button>
             </div>
           </form>
@@ -1152,7 +1182,7 @@
             }
 
             state.editingCategoryId = null;
-            window.navigateTo('categories');
+            window.goBack();
           };
         }
       }, 0);
@@ -1318,7 +1348,7 @@
     window.deleteCantiga = function(id) {
       if(confirm('Tem certeza que deseja excluir esta cantiga do Firebase?')) {
         remove(ref(db, `cantigas/${id}`));
-        if(state.currentPage === 'view-cantiga') window.navigateTo('home');
+        if(state.currentPage === 'view-cantiga') window.goBack();
       }
     };
 
