@@ -161,7 +161,7 @@
       border-left: 3px solid var(--gold-primary);
     }
 
-    /* Status do Firebase na Sidebar */
+    /* Status na Sidebar */
     .cloud-status {
       padding: 16px;
       border-top: 1px solid var(--border-color);
@@ -387,46 +387,42 @@
       font-size: 0.85rem;
     }
 
-    /* MODAIS CORRIGIDOS */
+    /* ==========================================
+       MODAIS CORRIGIDOS (FIXOS NA TELA)
+       ========================================== */
     .modal-overlay {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.75);
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 9999;
       display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
       backdrop-filter: blur(4px);
-      padding: 16px;
     }
 
     .modal-overlay.active {
-      display: flex;
-      opacity: 1;
-      pointer-events: all;
+      display: block;
     }
 
     .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 16px;
-      width: 100%;
+      width: 90%;
       max-width: 600px;
-      max-height: 90vh;
+      max-height: 85vh;
       display: flex;
       flex-direction: column;
       padding: 24px;
-      box-shadow: var(--card-shadow);
-      transform: translateY(20px);
-      transition: transform 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      z-index: 10000;
       overflow: hidden;
-    }
-
-    .modal-overlay.active .modal {
-      transform: translateY(0);
     }
 
     .modal-header {
@@ -439,9 +435,10 @@
 
     .modal form {
       overflow-y: auto;
-      padding-right: 4px;
+      padding-right: 8px;
       display: flex;
       flex-direction: column;
+      max-height: calc(85vh - 80px);
     }
 
     .form-group {
@@ -648,7 +645,7 @@
           <input type="text" id="catName" class="form-control" required placeholder="Ex: Ogum, Exu, Ponto de Entrada...">
         </div>
         <div class="form-group">
-          <label>Categoria</label>
+          <label>Categoria Pai (Opcional)</label>
           <select id="catParentId" class="form-control">
             <!-- Injetado via JS -->
           </select>
@@ -666,52 +663,40 @@
             <option value="fa-fire-burner">Caldeirão</option>
             <option value="fa-horse-head">Cavalo</option>
             <option value="fa-skull">Caveira</option>
-
             <option value="fa-hat-cowboy">Chapéu</option>
             <option value="fa-key">Chave</option>
             <option value="fa-child">Criança</option>
             <option value="fa-gem">Cristal</option>
             <option value="fa-cross">Cruz</option>
-
             <option value="fa-shield-halved">Escudo</option>
             <option value="fa-sword">Espada</option>
             <option value="fa-star">Estrela</option>
             <option value="fa-star-and-crescent">Estrela e Lua</option>
-
             <option value="fa-fire">Fogo</option>
             <option value="fa-spa">Folha</option>
             <option value="fa-flask">Garrafa</option>
             <option value="fa-droplet">Gota</option>
-
             <option value="fa-fan">Leque</option>
             <option value="fa-book">Livro</option>
             <option value="fa-moon">Lua</option>
-
             <option value="fa-hands-holding-child">Mãos</option>
             <option value="fa-hands-praying">Mãos em Oração</option>
-
             <option value="fa-masks-theater">Máscara</option>
             <option value="fa-wand-magic-sparkles">Mironga</option>
             <option value="fa-coins">Moedas</option>
-
             <option value="fa-eye">Olho</option>
-
             <option value="fa-mountain">Pedreira</option>
             <option value="fa-feather">Pena</option>
             <option value="fa-circle-dot">Ponto Rabiscado</option>
             <option value="fa-door-open">Porta</option>
-
             <option value="fa-bolt">Raio</option>
             <option value="fa-dharmachakra">Roda</option>
-
             <option value="fa-bell">Sineta</option>
             <option value="fa-sun">Sol</option>
-
             <option value="fa-wine-glass">Taça</option>
             <option value="fa-house-chimney-window">Terreiro</option>
             <option value="fa-clover">Trevo</option>
             <option value="fa-wheat-awn">Trigo</option>
-
             <option value="fa-broom">Vassoura</option>
             <option value="fa-wind">Vento</option>
           </select>
