@@ -895,7 +895,10 @@
         ? [...state.cantigas].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))[0] 
         : null;
 
-      const mainCategories = state.categories.filter(c => !c.parentId);
+      // Ordenação Alfabética das Categorias Principais
+      const mainCategories = state.categories
+        .filter(c => !c.parentId)
+        .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
 
       mainContent.innerHTML = `
         <div class="page-title">
@@ -937,7 +940,10 @@
 
     // --- CATEGORIAS ---
     function renderCategories() {
-      const mainCategories = state.categories.filter(c => !c.parentId);
+      // Ordenação Alfabética das Categorias Principais
+      const mainCategories = state.categories
+        .filter(c => !c.parentId)
+        .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
 
       mainContent.innerHTML = `
         <div class="page-title">
@@ -985,7 +991,11 @@
       const category = state.categories.find(c => c.id === catId);
       if(!category) return window.navigateTo('categories');
 
-      const subcategories = state.categories.filter(c => c.parentId === catId);
+      // Ordenação Alfabética das Subcategorias
+      const subcategories = state.categories
+        .filter(c => c.parentId === catId)
+        .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
+
       const subCatIds = subcategories.map(c => c.id);
 
       const allCategoryIds = [catId, ...subCatIds];
@@ -999,8 +1009,8 @@
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-secondary" onclick="window.exportCategoryToPDF('${catId}')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
-            <button class="btn btn-secondary" onclick="window.navigateTo('add-category', '${catId}')"><i class="fa-solid fa-folder-plus"></i>Subcategoria</button>
-            <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga', '${catId}')"><i class="fa-solid fa-plus"></i>Ponto</button>
+            <button class="btn btn-secondary" onclick="window.navigateTo('add-category', '${catId}')"><i class="fa-solid fa-folder-plus"></i> + Subcategoria</button>
+            <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga', '${catId}')"><i class="fa-solid fa-plus"></i> + Ponto</button>
           </div>
         </div>
 
@@ -1074,6 +1084,11 @@
       const cantigaToEdit = state.editingCantigaId ? state.cantigas.find(c => c.id === state.editingCantigaId) : null;
       const targetCategoryId = cantigaToEdit ? cantigaToEdit.categoryId : state.currentCategoryFilter;
 
+      // Ordenação Alfabética do Seletor de Categorias
+      const sortedCategories = [...state.categories].sort((a, b) => 
+        getCantigaCategoryName(a.id).localeCompare(getCantigaCategoryName(b.id), 'pt-BR', { sensitivity: 'base' })
+      );
+
       mainContent.innerHTML = `
         <div class="page-title">
           <h2>${cantigaToEdit ? 'Editar Ponto' : 'Criar Novo Ponto'}</h2>
@@ -1088,8 +1103,8 @@
             <div class="form-group">
               <label>Categoria / Subcategoria</label>
               <select id="cCategory" class="form-control" required>
-                ${state.categories.length === 0 ? '<option value="">Nenhuma categoria encontrada - crie uma primeiro</option>' : ''}
-                ${state.categories.map(c => `<option value="${c.id}" ${targetCategoryId === c.id ? 'selected' : ''}>${getCantigaCategoryName(c.id)}</option>`).join('')}
+                ${sortedCategories.length === 0 ? '<option value="">Nenhuma categoria encontrada - crie uma primeiro</option>' : ''}
+                ${sortedCategories.map(c => `<option value="${c.id}" ${targetCategoryId === c.id ? 'selected' : ''}>${getCantigaCategoryName(c.id)}</option>`).join('')}
               </select>
             </div>
 
@@ -1161,6 +1176,11 @@
       const catToEdit = state.editingCategoryId ? state.categories.find(c => c.id === state.editingCategoryId) : null;
       const targetParentId = catToEdit ? catToEdit.parentId : state.currentCategoryFilter;
 
+      // Ordenação Alfabética do Seletor de Categoria Pai
+      const sortedParentCategories = state.categories
+        .filter(c => !catToEdit || c.id !== catToEdit.id)
+        .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
+
       mainContent.innerHTML = `
         <div class="page-title">
           <h2>${catToEdit ? 'Editar Categoria' : 'Criar Categoria / Subcategoria'}</h2>
@@ -1176,8 +1196,7 @@
               <label>Categoria Pai (Deixe em branco se for Categoria Principal)</label>
               <select id="catParentId" class="form-control">
                 <option value="">Nenhuma (Categoria Principal)</option>
-                ${state.categories
-                  .filter(c => !catToEdit || c.id !== catToEdit.id)
+                ${sortedParentCategories
                   .map(c => `<option value="${c.id}" ${targetParentId === c.id ? 'selected' : ''}>${c.parentId ? '— ' : ''}${c.name}</option>`)
                   .join('')
                 }
