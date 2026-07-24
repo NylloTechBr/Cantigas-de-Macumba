@@ -137,6 +137,16 @@
       flex-direction: column;
       gap: 4px;
       flex: 1;
+      overflow-y: auto;
+    }
+
+    .nav-section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin: 12px 12px 4px 12px;
+      font-weight: 700;
     }
 
     .nav-item button {
@@ -144,7 +154,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 16px;
+      padding: 10px 16px;
       border-radius: 8px;
       color: var(--text-muted);
       font-weight: 500;
@@ -354,7 +364,49 @@
       font-weight: 500;
     }
 
-    /* DASHBOARD / ESTATÍSTICAS */
+    /* FORMULÁRIOS DAS ABAS DEDICADAS */
+    .form-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 700px;
+      margin: 0 auto;
+      box-shadow: var(--card-shadow);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-white);
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      border-color: var(--gold-primary);
+    }
+
+    textarea.form-control {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    /* ESTATÍSTICAS */
     .stats-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -387,81 +439,6 @@
       font-size: 0.85rem;
     }
 
-    /* MODAIS */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.75);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: var(--transition);
-      backdrop-filter: blur(4px);
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .modal {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      width: 100%;
-      max-width: 600px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 28px;
-      box-shadow: var(--card-shadow);
-      transform: translateY(20px);
-      transition: var(--transition);
-    }
-
-    .modal-overlay.active .modal {
-      transform: translateY(0);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 12px;
-      background-color: var(--bg-dark);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: var(--text-white);
-      transition: var(--transition);
-    }
-
-    .form-control:focus {
-      border-color: var(--gold-primary);
-    }
-
-    textarea.form-control {
-      min-height: 120px;
-      resize: vertical;
-    }
-
     /* VISUALIZADOR DE CANTIGA */
     .cantiga-view {
       background-color: var(--bg-card);
@@ -483,12 +460,11 @@
       border-left: 4px solid var(--gold-primary);
     }
 
-    /* OCULTAR ÁREA DE IMPRESSÃO NA TELA NORMAL */
+    /* IMPRESSÃO / EXPORTAÇÃO PDF */
     #print-section {
       display: none;
     }
 
-    /* ESTILO DE IMPRESSÃO / EXPORTAÇÃO PDF */
     @media print {
       body {
         background: #ffffff !important;
@@ -497,7 +473,7 @@
         overflow: visible !important;
       }
 
-      .app-container, .modal-overlay {
+      .app-container {
         display: none !important;
       }
 
@@ -573,6 +549,7 @@
         <h1>Cantigas de Macumba</h1>
       </div>
       <ul class="nav-menu">
+        <div class="nav-section-title">Navegação</div>
         <li class="nav-item active" data-page="home">
           <button><i class="fa-solid fa-house"></i> Início</button>
         </li>
@@ -585,6 +562,16 @@
         <li class="nav-item" data-page="recents">
           <button><i class="fa-solid fa-clock"></i> Recentes</button>
         </li>
+
+        <div class="nav-section-title">Ações Rápidas</div>
+        <li class="nav-item" data-page="add-cantiga">
+          <button><i class="fa-solid fa-plus-circle" style="color: var(--gold-primary);"></i> Criar Ponto</button>
+        </li>
+        <li class="nav-item" data-page="add-category">
+          <button><i class="fa-solid fa-folder-plus" style="color: var(--gold-primary);"></i> Criar Categoria</button>
+        </li>
+
+        <div class="nav-section-title">Sistema</div>
         <li class="nav-item" data-page="backup">
           <button><i class="fa-solid fa-database"></i> Backup</button>
         </li>
@@ -608,7 +595,7 @@
           <input type="text" id="globalSearch" placeholder="Pesquisar ponto, letra ou tag...">
         </div>
         <div class="header-actions">
-          <button class="btn btn-primary" id="btnNewCantiga"><i class="fa-solid fa-plus"></i> Novo Ponto</button>
+          <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga')"><i class="fa-solid fa-plus"></i> Novo Ponto</button>
         </div>
       </header>
 
@@ -621,130 +608,6 @@
 
   <!-- AREA RESERVADA PARA IMPRESSÃO / GERAR PDF -->
   <div id="print-section"></div>
-
-  <!-- MODAL CATEGORIA -->
-  <div class="modal-overlay" id="modalCategory">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="modalCatTitle" style="color: var(--gold-primary);">Nova Categoria / Subcategoria</h3>
-        <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <form id="formCategory">
-        <input type="hidden" id="catId">
-        <div class="form-group">
-          <label>Nome da Categoria</label>
-          <input type="text" id="catName" class="form-control" required placeholder="Ex: Ogum, Exu, Ponto de Entrada...">
-        </div>
-        <div class="form-group">
-          <label>Categoria Pai</label>
-          <select id="catParentId" class="form-control">
-            <!-- Injetado via JS -->
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Ícone</label>
-          <select id="catIcon" class="form-control">
-            <option value="fa-water">Água</option>
-            <option value="fa-ring">Aliança</option>
-            <option value="fa-anchor">Âncora</option>
-            <option value="fa-tree">Árvore</option>
-            <option value="fa-drum">Atabaque</option>
-            <option value="fa-compass">Bússola</option>
-            <option value="fa-smoking">Cachimbo / Charuto</option>
-            <option value="fa-fire-burner">Caldeirão</option>
-            <option value="fa-horse-head">Cavalo</option>
-            <option value="fa-skull">Caveira</option>
-            <option value="fa-hat-cowboy">Chapéu</option>
-            <option value="fa-key">Chave</option>
-            <option value="fa-child">Criança</option>
-            <option value="fa-gem">Cristal</option>
-            <option value="fa-cross">Cruz</option>
-            <option value="fa-shield-halved">Escudo</option>
-            <option value="fa-sword">Espada</option>
-            <option value="fa-star">Estrela</option>
-            <option value="fa-star-and-crescent">Estrela e Lua</option>
-            <option value="fa-fire">Fogo</option>
-            <option value="fa-spa">Folha</option>
-            <option value="fa-flask">Garrafa</option>
-            <option value="fa-droplet">Gota</option>
-            <option value="fa-fan">Leque</option>
-            <option value="fa-book">Livro</option>
-            <option value="fa-moon">Lua</option>
-            <option value="fa-hands-holding-child">Mãos</option>
-            <option value="fa-hands-praying">Mãos em Oração</option>
-            <option value="fa-masks-theater">Máscara</option>
-            <option value="fa-wand-magic-sparkles">Mironga</option>
-            <option value="fa-coins">Moedas</option>
-            <option value="fa-eye">Olho</option>
-            <option value="fa-mountain">Pedreira</option>
-            <option value="fa-feather">Pena</option>
-            <option value="fa-circle-dot">Ponto Rabiscado</option>
-            <option value="fa-door-open">Porta</option>
-            <option value="fa-bolt">Raio</option>
-            <option value="fa-dharmachakra">Roda</option>
-            <option value="fa-bell">Sineta</option>
-            <option value="fa-sun">Sol</option>
-            <option value="fa-wine-glass">Taça</option>
-            <option value="fa-house-chimney-window">Terreiro</option>
-            <option value="fa-clover">Trevo</option>
-            <option value="fa-wheat-awn">Trigo</option>
-            <option value="fa-broom">Vassoura</option>
-            <option value="fa-wind">Vento</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Cor de Destaque</label>
-          <input type="color" id="catColor" class="form-control" value="#d4af37" style="height: 40px; padding: 2px;">
-        </div>
-        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Salvar Categoria</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL CANTIGA (EDITOR) -->
-  <div class="modal-overlay" id="modalCantiga">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="modalCantigaTitle" style="color: var(--gold-primary);">Novo Ponto</h3>
-        <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <form id="formCantiga">
-        <input type="hidden" id="cantigaId">
-        <div class="form-group">
-          <label>Título do Ponto</label>
-          <input type="text" id="cantigaTitle" class="form-control" required placeholder="Ex: Ponto de Ogum">
-        </div>
-        <div class="form-group">
-          <label>Categoria / Subcategoria</label>
-          <select id="cantigaCategory" class="form-control" required>
-            <!-- Injetado via JS -->
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Tags (separadas por vírgula)</label>
-          <input type="text" id="cantigaTags" class="form-control" placeholder="Ex: Proteção, Abertura, Demanda">
-        </div>
-        <div class="form-group">
-          <label>Letra da Cantiga</label>
-          <textarea id="cantigaLyrics" class="form-control" required placeholder="Digite a letra completa aqui..."></textarea>
-          <div style="text-align: right; font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">
-            <span id="charCounter">0</span> caracteres
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Observações / Autor (Opcional)</label>
-          <input type="text" id="cantigaNotes" class="form-control" placeholder="Ex: Toque: Nagô / Autor: Desconhecido">
-        </div>
-        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary close-modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Salvar Ponto</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- FIREBASE IMPORTS (MÓDULOS ESM) -->
   <script type="module">
@@ -776,6 +639,8 @@
       currentPage: 'home',
       currentCategoryFilter: null,
       currentCantigaId: null,
+      editingCantigaId: null,
+      editingCategoryId: null,
       searchTerm: ''
     };
 
@@ -785,7 +650,6 @@
     const categoriesRef = ref(db, 'categories');
     const cantigasRef = ref(db, 'cantigas');
 
-    // Escutar Categorias
     onValue(categoriesRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -802,7 +666,6 @@
       render();
     });
 
-    // Escutar Cantigas
     onValue(cantigasRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -847,7 +710,10 @@
     window.navigateTo = function(page, categoryId = null) {
       state.currentPage = page;
       state.currentCategoryFilter = categoryId;
-      
+
+      if(page !== 'add-cantiga') state.editingCantigaId = null;
+      if(page !== 'add-category') state.editingCategoryId = null;
+
       document.querySelectorAll('.nav-item').forEach(el => {
         el.classList.toggle('active', el.dataset.page === page);
       });
@@ -871,6 +737,8 @@
         case 'category-detail': renderCategoryDetail(state.currentCategoryFilter); break;
         case 'favorites': renderFavorites(); break;
         case 'recents': renderRecents(); break;
+        case 'add-cantiga': renderAddCantiga(); break;
+        case 'add-category': renderAddCategory(); break;
         case 'backup': renderBackup(); break;
         case 'settings': renderSettings(); break;
         case 'view-cantiga': renderCantigaView(state.currentCantigaId); break;
@@ -891,7 +759,7 @@
       mainContent.innerHTML = `
         <div class="page-title">
           <h2>Início</h2>
-          <button class="btn btn-primary" onclick="window.openModalCategory()"><i class="fa-solid fa-folder-plus"></i> Nova Categoria</button>
+          <button class="btn btn-primary" onclick="window.navigateTo('add-category')"><i class="fa-solid fa-folder-plus"></i> Nova Categoria</button>
         </div>
 
         <div class="stats-container">
@@ -933,7 +801,7 @@
       mainContent.innerHTML = `
         <div class="page-title">
           <h2>Categorias</h2>
-          <button class="btn btn-primary" onclick="window.openModalCategory()"><i class="fa-solid fa-plus"></i> Nova Categoria / Subcategoria</button>
+          <button class="btn btn-primary" onclick="window.navigateTo('add-category')"><i class="fa-solid fa-plus"></i> Nova Categoria / Subcategoria</button>
         </div>
         ${mainCategories.length === 0 ? '<p style="color: var(--text-muted);">Nenhuma categoria cadastrada.</p>' : ''}
         <div class="grid-cards">
@@ -969,7 +837,7 @@
       `;
     }
 
-    // --- DETALHE DA CATEGORIA E SUBCATEGORIAS ---
+    // --- DETALHE DA CATEGORIA ---
     function renderCategoryDetail(catId) {
       const category = state.categories.find(c => c.id === catId);
       if(!category) return window.navigateTo('categories');
@@ -988,8 +856,7 @@
           </div>
           <div style="display:flex; gap:10px;">
             <button class="btn btn-secondary" onclick="window.exportCategoryToPDF('${catId}')"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
-            <button class="btn btn-secondary" onclick="window.openModalCategory('${catId}', true)"><i class="fa-solid fa-plus"></i> Nova Subcategoria</button>
-            <button class="btn btn-primary" onclick="window.openModalCantiga('${catId}')"><i class="fa-solid fa-plus"></i> Adicionar Ponto</button>
+            <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga')"><i class="fa-solid fa-plus"></i> Adicionar Ponto</button>
           </div>
         </div>
 
@@ -1009,7 +876,6 @@
       `;
     }
 
-    // --- CARD DA CANTIGA ---
     function renderCantigaCardHtml(cantiga) {
       const isFav = cantiga.favorite;
       return `
@@ -1038,32 +904,245 @@
       `;
     }
 
-    // --- FAVORITOS ---
+    // --- FAVORITOS E RECENTES ---
     function renderFavorites() {
       const favs = state.cantigas.filter(c => c.favorite);
       mainContent.innerHTML = `
-        <div class="page-title">
-          <h2>Pontos Favoritos</h2>
-        </div>
+        <div class="page-title"><h2>Pontos Favoritos</h2></div>
         ${favs.length === 0 ? '<p style="color: var(--text-muted);">Nenhum ponto marcado como favorito.</p>' : ''}
-        <div class="grid-cards">
-          ${favs.map(c => renderCantigaCardHtml(c)).join('')}
-        </div>
+        <div class="grid-cards">${favs.map(c => renderCantigaCardHtml(c)).join('')}</div>
       `;
     }
 
-    // --- RECENTES ---
     function renderRecents() {
       const recents = [...state.cantigas].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 10);
       mainContent.innerHTML = `
-        <div class="page-title">
-          <h2>Adicionados Recentemente</h2>
-        </div>
+        <div class="page-title"><h2>Adicionados Recentemente</h2></div>
         ${recents.length === 0 ? '<p style="color: var(--text-muted);">Nenhum ponto cadastrado.</p>' : ''}
-        <div class="grid-cards">
-          ${recents.map(c => renderCantigaCardHtml(c)).join('')}
+        <div class="grid-cards">${recents.map(c => renderCantigaCardHtml(c)).join('')}</div>
+      `;
+    }
+
+    /* ==========================================
+       ABA DEDICADA: CRIAR / EDITAR PONTO
+       ========================================== */
+    function renderAddCantiga() {
+      const cantigaToEdit = state.editingCantigaId ? state.cantigas.find(c => c.id === state.editingCantigaId) : null;
+
+      mainContent.innerHTML = `
+        <div class="page-title">
+          <h2>${cantigaToEdit ? 'Editar Ponto' : 'Criar Novo Ponto'}</h2>
+        </div>
+        <div class="form-container">
+          <form id="standaloneFormCantiga">
+            <div class="form-group">
+              <label>Título do Ponto</label>
+              <input type="text" id="cTitle" class="form-control" required placeholder="Ex: Ponto de Ogum Beira-Mar" value="${cantigaToEdit ? cantigaToEdit.title : ''}">
+            </div>
+
+            <div class="form-group">
+              <label>Categoria / Subcategoria</label>
+              <select id="cCategory" class="form-control" required>
+                ${state.categories.length === 0 ? '<option value="">Nenhuma categoria encontrada - crie uma primeiro</option>' : ''}
+                ${state.categories.map(c => `<option value="${c.id}" ${cantigaToEdit && cantigaToEdit.categoryId === c.id ? 'selected' : ''}>${getCantigaCategoryName(c.id)}</option>`).join('')}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Tags (separadas por vírgula)</label>
+              <input type="text" id="cTags" class="form-control" placeholder="Ex: Proteção, Abertura, Demanda" value="${cantigaToEdit && cantigaToEdit.tags ? cantigaToEdit.tags.join(', ') : ''}">
+            </div>
+
+            <div class="form-group">
+              <label>Letra da Cantiga</label>
+              <textarea id="cLyrics" class="form-control" required placeholder="Digite a letra completa da cantiga aqui...">${cantigaToEdit ? cantigaToEdit.lyrics : ''}</textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Observações / Autor (Opcional)</label>
+              <input type="text" id="cNotes" class="form-control" placeholder="Ex: Toque: Nagô / Autor: Desconhecido" value="${cantigaToEdit && cantigaToEdit.notes ? cantigaToEdit.notes : ''}">
+            </div>
+
+            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px;">
+              <button type="button" class="btn btn-secondary" onclick="window.navigateTo('home')">Cancelar</button>
+              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar Ponto</button>
+            </div>
+          </form>
         </div>
       `;
+
+      setTimeout(() => {
+        const form = document.getElementById('standaloneFormCantiga');
+        if (form) {
+          form.onsubmit = (e) => {
+            e.preventDefault();
+            const title = document.getElementById('cTitle').value;
+            const categoryId = document.getElementById('cCategory').value;
+            const tagsStr = document.getElementById('cTags').value;
+            const lyrics = document.getElementById('cLyrics').value;
+            const notes = document.getElementById('cNotes').value;
+
+            if(!categoryId) {
+              alert('Crie ao menos uma categoria antes de adicionar um ponto.');
+              return;
+            }
+
+            const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(t => t !== '') : [];
+
+            if (state.editingCantigaId) {
+              update(ref(db, `cantigas/${state.editingCantigaId}`), {
+                title, categoryId, tags, lyrics, notes, updatedAt: new Date().toISOString()
+              });
+              alert('Ponto atualizado com sucesso!');
+            } else {
+              const newRef = push(ref(db, 'cantigas'));
+              set(newRef, {
+                title, categoryId, tags, lyrics, notes, favorite: false, createdAt: new Date().toISOString()
+              });
+              alert('Ponto salvo com sucesso!');
+            }
+
+            state.editingCantigaId = null;
+            window.navigateTo('home');
+          };
+        }
+      }, 0);
+    }
+
+    /* ==========================================
+       ABA DEDICADA: CRIAR / EDITAR CATEGORIA
+       ========================================== */
+    function renderAddCategory() {
+      const catToEdit = state.editingCategoryId ? state.categories.find(c => c.id === state.editingCategoryId) : null;
+
+      mainContent.innerHTML = `
+        <div class="page-title">
+          <h2>${catToEdit ? 'Editar Categoria' : 'Criar Nova Categoria / Subcategoria'}</h2>
+        </div>
+        <div class="form-container">
+          <form id="standaloneFormCategory">
+            <div class="form-group">
+              <label>Nome da Categoria</label>
+              <input type="text" id="catName" class="form-control" required placeholder="Ex: Ogum, Exu, Ponto de Entrada..." value="${catToEdit ? catToEdit.name : ''}">
+            </div>
+
+            <div class="form-group">
+              <label>Categoria Pai (Deixe em branco se for Categoria Principal)</label>
+              <select id="catParentId" class="form-control">
+                <option value="">Nenhuma (Categoria Principal)</option>
+                ${state.categories
+                  .filter(c => !catToEdit || c.id !== catToEdit.id)
+                  .map(c => `<option value="${c.id}" ${catToEdit && catToEdit.parentId === c.id ? 'selected' : ''}>${c.parentId ? '— ' : ''}${c.name}</option>`)
+                  .join('')
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Ícone Representativo</label>
+ <select id="catIcon" class="form-control">
+  <option value="fa-water">Água</option>
+  <option value="fa-ring">Aliança</option>
+  <option value="fa-anchor">Âncora</option>
+  <option value="fa-tree">Árvore</option>
+  <option value="fa-drum">Atabaque</option>
+  <option value="fa-compass">Bússola</option>
+  <option value="fa-smoking">Cachimbo / Charuto</option>
+  <option value="fa-fire-burner">Caldeirão</option>
+  <option value="fa-horse-head">Cavalo</option>
+  <option value="fa-skull">Caveira</option>
+
+  <option value="fa-hat-cowboy">Chapéu</option>
+  <option value="fa-key">Chave</option>
+  <option value="fa-child">Criança</option>
+  <option value="fa-gem">Cristal</option>
+  <option value="fa-cross">Cruz</option>
+
+  <option value="fa-shield-halved">Escudo</option>
+  <option value="fa-sword">Espada</option>
+  <option value="fa-star">Estrela</option>
+  <option value="fa-star-and-crescent">Estrela e Lua</option>
+
+  <option value="fa-fire">Fogo</option>
+  <option value="fa-spa">Folha</option>
+  <option value="fa-flask">Garrafa</option>
+  <option value="fa-droplet">Gota</option>
+
+  <option value="fa-fan">Leque</option>
+  <option value="fa-book">Livro</option>
+  <option value="fa-moon">Lua</option>
+
+  <option value="fa-hands-holding-child">Mãos</option>
+  <option value="fa-hands-praying">Mãos em Oração</option>
+
+  <option value="fa-masks-theater">Máscara</option>
+  <option value="fa-wand-magic-sparkles">Mironga</option>
+  <option value="fa-coins">Moedas</option>
+
+  <option value="fa-eye">Olho</option>
+
+  <option value="fa-mountain">Pedreira</option>
+  <option value="fa-feather">Pena</option>
+  <option value="fa-circle-dot">Ponto Rabiscado</option>
+  <option value="fa-door-open">Porta</option>
+
+  <option value="fa-bolt">Raio</option>
+  <option value="fa-dharmachakra">Roda</option>
+
+  <option value="fa-bell">Sineta</option>
+  <option value="fa-sun">Sol</option>
+
+  <option value="fa-wine-glass">Taça</option>
+  <option value="fa-house-chimney-window">Terreiro</option>
+  <option value="fa-clover">Trevo</option>
+  <option value="fa-wheat-awn">Trigo</option>
+
+  <option value="fa-broom">Vassoura</option>
+  <option value="fa-wind">Vento</option>
+</select>
+            </div>
+
+            <div class="form-group">
+              <label>Cor de Destaque</label>
+              <input type="color" id="catColor" class="form-control" value="${catToEdit ? catToEdit.color : '#d4af37'}" style="height: 45px; padding: 2px;">
+            </div>
+
+            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px;">
+              <button type="button" class="btn btn-secondary" onclick="window.navigateTo('categories')">Cancelar</button>
+              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar Categoria</button>
+            </div>
+          </form>
+        </div>
+      `;
+
+      setTimeout(() => {
+        const form = document.getElementById('standaloneFormCategory');
+        if (form) {
+          form.onsubmit = (e) => {
+            e.preventDefault();
+            const name = document.getElementById('catName').value;
+            const parentId = document.getElementById('catParentId').value || null;
+            const icon = document.getElementById('catIcon').value;
+            const color = document.getElementById('catColor').value;
+
+            const categoryData = { name, icon, color };
+            if (parentId) categoryData.parentId = parentId;
+
+            if (state.editingCategoryId) {
+              if (!parentId) categoryData.parentId = null;
+              update(ref(db, `categories/${state.editingCategoryId}`), categoryData);
+              alert('Categoria atualizada com sucesso!');
+            } else {
+              const newRef = push(ref(db, 'categories'));
+              set(newRef, categoryData);
+              alert('Categoria criada com sucesso!');
+            }
+
+            state.editingCategoryId = null;
+            window.navigateTo('categories');
+          };
+        }
+      }, 0);
     }
 
     // --- VISUALIZAR CANTIGA ---
@@ -1128,24 +1207,19 @@
       `;
     }
 
-    // --- BACKUP ---
+    // --- BACKUP E CONFIGURAÇÕES ---
     function renderBackup() {
       mainContent.innerHTML = `
-        <div class="page-title">
-          <h2>Backup e Restauração</h2>
-        </div>
+        <div class="page-title"><h2>Backup e Restauração</h2></div>
         <div class="cantiga-view">
           <p style="margin-bottom: 20px; color: var(--text-muted);">Baixe uma cópia de segurança do Firebase ou restaure dados através de um arquivo JSON.</p>
-          
           <div style="display:flex; flex-direction:column; gap: 16px;">
             <div>
               <h3>Exportar Dados (JSON)</h3>
               <p style="font-size:0.85rem; color: var(--text-muted); margin-bottom: 8px;">Baixe um arquivo JSON contendo todas as suas categorias e cantigas do banco em nuvem.</p>
               <button class="btn btn-primary" onclick="window.exportData()"><i class="fa-solid fa-download"></i> Baixar Backup JSON</button>
             </div>
-
             <hr style="border-color: var(--border-color);">
-
             <div>
               <h3>Importar Dados (JSON)</h3>
               <p style="font-size:0.85rem; color: var(--text-muted); margin-bottom: 8px;">Importe um arquivo JSON para enviar dados em massa ao seu Firebase Realtime Database.</p>
@@ -1166,12 +1240,9 @@
       }, 0);
     }
 
-    // --- CONFIGURAÇÕES ---
     function renderSettings() {
       mainContent.innerHTML = `
-        <div class="page-title">
-          <h2>Configurações do Sistema</h2>
-        </div>
+        <div class="page-title"><h2>Configurações do Sistema</h2></div>
         <div class="cantiga-view">
           <div class="form-group">
             <label>Tema Visual</label>
@@ -1180,7 +1251,6 @@
               <option value="light" ${state.settings.theme === 'light' ? 'selected' : ''}>Modo Claro</option>
             </select>
           </div>
-
           <div class="form-group">
             <label>Tamanho da Fonte das Cantigas</label>
             <select class="form-control" id="fontSizeSelect">
@@ -1190,14 +1260,11 @@
               <option value="20px" ${state.settings.fontSize === '20px' ? 'selected' : ''}>Extra Grande</option>
             </select>
           </div>
-
           <div class="form-group">
             <label>Cor Principal de Destaque</label>
             <input type="color" class="form-control" id="colorPicker" value="${state.settings.mainColor || '#d4af37'}" style="height: 40px; padding:2px;">
           </div>
-
           <hr style="border-color: var(--border-color); margin: 24px 0;">
-
           <div style="border: 1px solid var(--red-dark); padding: 16px; border-radius: 8px; background-color: rgba(122, 0, 16, 0.1);">
             <h4 style="color: var(--red-hover); margin-bottom: 8px;">Zona de Perigo</h4>
             <p style="font-size:0.85rem; color: var(--text-muted); margin-bottom: 12px;">Esta ação limpa permanentemente todos os dados armazenados no banco de dados Firebase.</p>
@@ -1214,84 +1281,12 @@
     }
 
     /* ==========================================
-       OPERAÇÕES FIREBASE (CRUD) & EXPORTAÇÃO PDF
+       OPERAÇÕES FIREBASE (CRUD) & PDF
        ========================================== */
-
-    // MODAL CATEGORIA
-    const modalCategory = document.getElementById('modalCategory');
-    window.openModalCategory = function(catId = null, isSubcategoryOf = false) {
-      const form = document.getElementById('formCategory');
-      form.reset();
-      
-      const parentSelect = document.getElementById('catParentId');
-      
-      let selectedParentId = "";
-      if (catId && isSubcategoryOf) {
-        selectedParentId = catId;
-      } else if (catId && !isSubcategoryOf) {
-        const currentCat = state.categories.find(c => c.id === catId);
-        selectedParentId = currentCat ? (currentCat.parentId || "") : "";
-      }
-
-      let optionsHTML = `<option value="">Nenhuma (Categoria Principal)</option>`;
-      
-      state.categories.forEach(c => {
-        if (!isSubcategoryOf && c.id === catId) return;
-
-        const prefix = c.parentId ? "— " : "";
-        optionsHTML += `<option value="${c.id}">${prefix}${c.name}</option>`;
-      });
-
-      parentSelect.innerHTML = optionsHTML;
-
-      if (catId && !isSubcategoryOf) {
-        const cat = state.categories.find(c => c.id === catId);
-        document.getElementById('catId').value = cat.id;
-        document.getElementById('catName').value = cat.name;
-        document.getElementById('catParentId').value = selectedParentId;
-        document.getElementById('catIcon').value = cat.icon || 'fa-fire';
-        document.getElementById('catColor').value = cat.color || '#d4af37';
-        document.getElementById('modalCatTitle').innerText = 'Editar Categoria';
-      } else if (catId && isSubcategoryOf) {
-        document.getElementById('catId').value = '';
-        document.getElementById('catParentId').value = selectedParentId;
-        document.getElementById('modalCatTitle').innerText = 'Nova Subcategoria';
-      } else {
-        document.getElementById('catId').value = '';
-        document.getElementById('catParentId').value = '';
-        document.getElementById('modalCatTitle').innerText = 'Nova Categoria';
-      }
-
-      modalCategory.classList.add('active');
+    window.editCategory = function(id) {
+      state.editingCategoryId = id;
+      window.navigateTo('add-category');
     };
-
-    document.getElementById('formCategory').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const id = document.getElementById('catId').value;
-      const name = document.getElementById('catName').value;
-      const parentId = document.getElementById('catParentId').value || null;
-      const icon = document.getElementById('catIcon').value;
-      const color = document.getElementById('catColor').value;
-
-      const categoryData = { name, icon, color };
-      if (parentId) {
-        categoryData.parentId = parentId;
-      }
-
-      if(id) {
-        if (!parentId) {
-          categoryData.parentId = null;
-        }
-        update(ref(db, `categories/${id}`), categoryData);
-      } else {
-        const newRef = push(ref(db, 'categories'));
-        set(newRef, categoryData);
-      }
-
-      modalCategory.classList.remove('active');
-    });
-
-    window.editCategory = function(id) { window.openModalCategory(id); };
     
     window.deleteCategory = function(id) {
       if(confirm('Tem certeza? Isso excluirá a categoria do Firebase.')) {
@@ -1299,122 +1294,10 @@
       }
     };
 
-    // EXPORTAR CATEGORIA EM PDF
-    window.exportCategoryToPDF = function(catId) {
-      const category = state.categories.find(c => c.id === catId);
-      if(!category) return;
-
-      const subCatIds = state.categories.filter(c => c.parentId === catId).map(c => c.id);
-      const allCatIds = [catId, ...subCatIds];
-      const cantigas = state.cantigas.filter(c => allCatIds.includes(c.categoryId));
-
-      if(cantigas.length === 0) {
-        alert("Não há cantigas nesta categoria para exportar.");
-        return;
-      }
-
-      const printArea = document.getElementById('print-section');
-      
-      let html = `
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="font-size: 2.2rem; margin-bottom: 5px; font-family: 'Cinzel', serif;">Templo de Umbanda Caboclo Ubirajara e Vovó Rita</h1>
-          <h2 style="font-size: 1.5rem; color: #444;">Categoria: ${category.name}</h2>
-          <p style="font-size: 0.9rem; color: #666;">Gerado em ${new Date().toLocaleDateString('pt-BR')}</p>
-        </div>
-        <hr style="margin-bottom: 24px; border: 0; border-top: 2px solid #333;">
-      `;
-
-      cantigas.forEach(c => {
-        html += `
-          <div class="pdf-cantiga-item">
-            <div class="pdf-cantiga-title">${c.title} <span style="font-size: 0.85rem; font-weight: normal; color: #555;">(${getCantigaCategoryName(c.categoryId)})</span></div>
-            <div class="pdf-cantiga-lyrics">${c.lyrics}</div>
-            ${c.notes ? `<div style="font-style: italic; font-size: 0.85rem; color: #555; margin-top: 8px;">Obs: ${c.notes}</div>` : ''}
-          </div>
-        `;
-      });
-
-      printArea.innerHTML = html;
-      window.print();
+    window.editCantiga = function(id) {
+      state.editingCantigaId = id;
+      window.navigateTo('add-cantiga');
     };
-
-    // MODAL CANTIGA / EDITOR
-    const modalCantiga = document.getElementById('modalCantiga');
-    window.openModalCantiga = function(defaultCatId = null, cantigaId = null) {
-      if(state.categories.length === 0) {
-        alert('Crie ao menos uma categoria antes de adicionar um ponto.');
-        window.openModalCategory();
-        return;
-      }
-
-      const form = document.getElementById('formCantiga');
-      form.reset();
-      
-      const select = document.getElementById('cantigaCategory');
-      select.innerHTML = state.categories.map(c => `<option value="${c.id}">${getCantigaCategoryName(c.id)}</option>`).join('');
-
-      if(cantigaId) {
-        const cantiga = state.cantigas.find(c => c.id === cantigaId);
-        document.getElementById('cantigaId').value = cantiga.id;
-        document.getElementById('cantigaTitle').value = cantiga.title;
-        document.getElementById('cantigaCategory').value = cantiga.categoryId;
-        document.getElementById('cantigaTags').value = cantiga.tags ? cantiga.tags.join(', ') : '';
-        document.getElementById('cantigaLyrics').value = cantiga.lyrics;
-        document.getElementById('cantigaNotes').value = cantiga.notes || '';
-        document.getElementById('modalCantigaTitle').innerText = 'Editar Ponto';
-      } else {
-        document.getElementById('cantigaId').value = '';
-        if(defaultCatId) document.getElementById('cantigaCategory').value = defaultCatId;
-        document.getElementById('modalCantigaTitle').innerText = 'Novo Ponto';
-      }
-
-      updateCharCounter();
-      modalCantiga.classList.add('active');
-    };
-
-    document.getElementById('cantigaLyrics').addEventListener('input', updateCharCounter);
-    function updateCharCounter() {
-      const len = document.getElementById('cantigaLyrics').value.length;
-      document.getElementById('charCounter').innerText = len;
-    }
-
-    document.getElementById('formCantiga').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const id = document.getElementById('cantigaId').value;
-      const title = document.getElementById('cantigaTitle').value;
-      const categoryId = document.getElementById('cantigaCategory').value;
-      const tagsStr = document.getElementById('cantigaTags').value;
-      const lyrics = document.getElementById('cantigaLyrics').value;
-      const notes = document.getElementById('cantigaNotes').value;
-
-      const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(t => t !== '') : [];
-
-      if(id) {
-        update(ref(db, `cantigas/${id}`), {
-          title,
-          categoryId,
-          tags,
-          lyrics,
-          notes,
-          updatedAt: new Date().toISOString()
-        });
-      } else {
-        const newRef = push(ref(db, 'cantigas'));
-        set(newRef, {
-          title,
-          categoryId,
-          tags,
-          lyrics,
-          notes,
-          favorite: false,
-          createdAt: new Date().toISOString()
-        });
-      }
-
-      modalCantiga.classList.remove('active');
-    });
-
-    window.editCantiga = function(id) { window.openModalCantiga(null, id); };
     
     window.deleteCantiga = function(id) {
       if(confirm('Tem certeza que deseja excluir esta cantiga do Firebase?')) {
@@ -1442,9 +1325,7 @@
     window.toggleFavorite = function(id) {
       const cantiga = state.cantigas.find(c => c.id === id);
       if(cantiga) {
-        update(ref(db, `cantigas/${id}`), {
-          favorite: !cantiga.favorite
-        });
+        update(ref(db, `cantigas/${id}`), { favorite: !cantiga.favorite });
       }
     };
 
@@ -1453,7 +1334,43 @@
       window.navigateTo('view-cantiga');
     };
 
-    // AÇÕES AUXILIARES
+    window.exportCategoryToPDF = function(catId) {
+      const category = state.categories.find(c => c.id === catId);
+      if(!category) return;
+
+      const subCatIds = state.categories.filter(c => c.parentId === catId).map(c => c.id);
+      const allCatIds = [catId, ...subCatIds];
+      const cantigas = state.cantigas.filter(c => allCatIds.includes(c.categoryId));
+
+      if(cantigas.length === 0) {
+        alert("Não há cantigas nesta categoria para exportar.");
+        return;
+      }
+
+      const printArea = document.getElementById('print-section');
+      let html = `
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="font-size: 2.2rem; margin-bottom: 5px; font-family: 'Cinzel', serif;">Templo de Umbanda Caboclo Ubirajara e Vovó Rita</h1>
+          <h2 style="font-size: 1.5rem; color: #444;">Categoria: ${category.name}</h2>
+          <p style="font-size: 0.9rem; color: #666;">Gerado em ${new Date().toLocaleDateString('pt-BR')}</p>
+        </div>
+        <hr style="margin-bottom: 24px; border: 0; border-top: 2px solid #333;">
+      `;
+
+      cantigas.forEach(c => {
+        html += `
+          <div class="pdf-cantiga-item">
+            <div class="pdf-cantiga-title">${c.title} <span style="font-size: 0.85rem; font-weight: normal; color: #555;">(${getCantigaCategoryName(c.categoryId)})</span></div>
+            <div class="pdf-cantiga-lyrics">${c.lyrics}</div>
+            ${c.notes ? `<div style="font-style: italic; font-size: 0.85rem; color: #555; margin-top: 8px;">Obs: ${c.notes}</div>` : ''}
+          </div>
+        `;
+      });
+
+      printArea.innerHTML = html;
+      window.print();
+    };
+
     window.copyToClipboard = function(text) {
       navigator.clipboard.writeText(text).then(() => {
         alert('Letra copiada para a área de transferência!');
@@ -1489,12 +1406,8 @@
       }
     };
 
-    // BACKUP E CONFIGURAÇÕES
     window.exportData = function() {
-      const exportObject = {
-        categories: state.categories,
-        cantigas: state.cantigas
-      };
+      const exportObject = { categories: state.categories, cantigas: state.cantigas };
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObject, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
@@ -1513,7 +1426,6 @@
         try {
           const imported = JSON.parse(e.target.result);
           if(imported.categories && imported.cantigas) {
-            
             imported.categories.forEach(cat => {
               const catRef = ref(db, `categories/${cat.id || push(ref(db, 'categories')).key}`);
               set(catRef, { name: cat.name, parentId: cat.parentId || null, icon: cat.icon, color: cat.color });
@@ -1532,7 +1444,7 @@
               });
             });
 
-            alert('Dados importados com sucesso para o Firebase!');
+            alert('Dados importados com sucesso!');
             window.navigateTo('home');
           } else {
             alert('Arquivo JSON com estrutura inválida.');
@@ -1563,7 +1475,6 @@
     document.addEventListener('DOMContentLoaded', () => {
       applySettings();
 
-      // Menu Nav
       document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', () => {
           const page = item.dataset.page;
@@ -1572,23 +1483,10 @@
         });
       });
 
-      // Mobile Menu
       document.getElementById('menuToggle').addEventListener('click', () => {
         document.getElementById('sidebar').classList.toggle('open');
       });
 
-      // Novo Ponto (Header)
-      document.getElementById('btnNewCantiga').addEventListener('click', () => window.openModalCantiga());
-
-      // Fechar Modais
-      document.querySelectorAll('.close-modal').forEach(btn => {
-        btn.addEventListener('click', () => {
-          modalCategory.classList.remove('active');
-          modalCantiga.classList.remove('active');
-        });
-      });
-
-      // Busca Global
       document.getElementById('globalSearch').addEventListener('input', (e) => {
         state.searchTerm = e.target.value;
         render();
