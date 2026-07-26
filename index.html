@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cantigas de Macumba</title>
+  <title>Tucuvori: Pontos Cantados de Umbanda</title>
   
-  <!-- Google Fonts & FontAwesome -->
+  <!-- Novas Fontes Profissionais: Space Grotesk (Títulos) & Plus Jakarta Sans (Texto/UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -16,32 +16,38 @@
        VARIÁVEIS E TEMAS
        ========================================== */
     :root {
-      --bg-dark: #0f0d0e;
-      --bg-card: #181517;
-      --bg-sidebar: #141113;
-      --gold-primary: #d4af37;
-      --gold-hover: #f3e5ab;
-      --red-dark: #7a0010;
+      /* Tema Claro (Papel Velho / Pergaminho + Vermelho + Preto) */
+      --bg-dark: #f4ecd8;         
+      --bg-card: #ebdcb9;         
+      --bg-sidebar: #e3d1a8;      
+      --gold-primary: #a81c1c;    
+      --gold-hover: #c92a2a;      
+      --red-dark: #7a0010;        
       --red-hover: #9e0015;
-      --text-white: #f5f5f7;
-      --text-muted: #a1a1aa;
-      --border-color: #27272a;
-      --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --font-title: 'Cinzel', serif;
-      --font-body: 'Inter', sans-serif;
+      --text-white: #000;      
+      --text-muted: #000;      
+      --border-color: #d1be94;    
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-title: 'Rockwell', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
       --base-font-size: 16px;
       --lyric-font-size: 1.25rem;
     }
 
-    [data-theme="light"] {
-      --bg-dark: #f8f9fa;
-      --bg-card: #ffffff;
-      --bg-sidebar: #f1f3f5;
-      --text-white: #1a1a1a;
-      --text-muted: #6c757d;
-      --border-color: #dee2e6;
-      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Tema Escuro */
+    [data-theme="dark"] {
+      --bg-dark: #0d0e12;
+      --bg-card: #151821;
+      --bg-sidebar: #11131a;
+      --gold-primary: #d32f2f;
+      --gold-hover: #f44336;
+      --red-dark: #7a0010;
+      --red-hover: #9e0015;
+      --text-white: #f1f3f5;
+      --text-muted: #9aa0a6;
+      --border-color: #262a36;
+      --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
 
     /* RESET & BASE */
@@ -100,7 +106,6 @@
       overflow: hidden;
     }
 
-    /* Sidebar Overlay (Mobile) */
     .sidebar-overlay {
       display: none;
       position: fixed;
@@ -132,7 +137,7 @@
     }
 
     .brand {
-      padding: 24px;
+      padding: 20px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -147,8 +152,10 @@
     .brand h1 {
       font-family: var(--font-title);
       font-size: 1.1rem;
+      font-weight: 700;
       color: var(--gold-primary);
-      letter-spacing: 1px;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
     }
 
     .nav-menu {
@@ -178,13 +185,13 @@
       padding: 10px 16px;
       border-radius: 8px;
       color: var(--text-muted);
-      font-weight: 500;
+      font-weight: 600;
       transition: var(--transition);
     }
 
     .nav-item button:hover,
     .nav-item.active button {
-      background-color: rgba(212, 175, 55, 0.1);
+      background-color: rgba(168, 28, 28, 0.12);
       color: var(--gold-primary);
     }
 
@@ -192,7 +199,6 @@
       border-left: 3px solid var(--gold-primary);
     }
 
-    /* Status do Firebase na Sidebar */
     .cloud-status {
       padding: 16px;
       border-top: 1px solid var(--border-color);
@@ -206,7 +212,7 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background-color: #2e7d32;
+      background-color: var(--gold-primary);
     }
 
     /* Header & Main Area */
@@ -244,10 +250,30 @@
       padding: 8px;
     }
 
+    .btn-back-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-white);
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: var(--transition);
+    }
+
+    .btn-back-header:hover {
+      background-color: var(--gold-primary);
+      color: #ffffff;
+      border-color: var(--gold-primary);
+    }
+
     .search-bar {
       position: relative;
-      width: 320px;
-      max-width: 100%;
+      width: 100%;
+      max-width: 500px;
     }
 
     .search-bar input {
@@ -272,18 +298,49 @@
       color: var(--text-muted);
     }
 
-    .header-actions {
-      display: flex;
-      gap: 12px;
-    }
-
     .main-content {
       flex: 1;
       padding: 28px;
-      padding-bottom: 60px; /* Evita que o conteúdo cole ou corte no fim */
+      padding-bottom: 80px;
       overflow-y: auto;
       background-color: var(--bg-dark);
       -webkit-overflow-scrolling: touch;
+    }
+
+    /* BARRA FIXA MOBILE */
+    .mobile-bottom-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background-color: var(--bg-sidebar);
+      border-top: 1px solid var(--border-color);
+      z-index: 90;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+    }
+
+    .mobile-bottom-bar button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      flex: 1;
+      height: 100%;
+      padding: 4px 0;
+      font-weight: 600;
+    }
+
+    .mobile-bottom-bar button i {
+      font-size: 1.1rem;
+      color: var(--gold-primary);
     }
 
     /* COMPONENTES REUTILIZÁVEIS */
@@ -301,7 +358,7 @@
 
     .btn-primary {
       background-color: var(--gold-primary);
-      color: #000;
+      color: #fff;
     }
     .btn-primary:hover {
       background-color: var(--gold-hover);
@@ -327,9 +384,9 @@
 
     .page-title {
       font-family: var(--font-title);
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       color: var(--gold-primary);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -356,12 +413,12 @@
       flex-direction: column;
       justify-content: space-between;
       cursor: pointer;
+      box-shadow: var(--card-shadow);
     }
 
     .card:hover {
       transform: translateY(-4px);
-      box-shadow: var(--card-shadow);
-      border-color: rgba(212, 175, 55, 0.4);
+      border-color: var(--gold-primary);
     }
 
     .card-header {
@@ -382,10 +439,12 @@
     }
 
     .card-title {
+      font-family: var(--font-title);
       font-size: 1.15rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 6px;
-      line-height: 1.4;
+      line-height: 1.3;
+      color: var(--text-white);
     }
 
     .card-subtitle {
@@ -394,12 +453,29 @@
     }
 
     .tag {
-      background-color: rgba(212, 175, 55, 0.15);
+      background-color: rgba(168, 28, 28, 0.12);
       color: var(--gold-primary);
-      padding: 4px 8px;
-      border-radius: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
       font-size: 0.75rem;
-      font-weight: 500;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .app-info-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      line-height: 1.6;
+      box-shadow: var(--card-shadow);
+    }
+
+    .app-info-card h3 {
+      font-family: var(--font-title);
+      color: var(--gold-primary);
+      margin-bottom: 8px;
     }
 
     /* FORMULÁRIOS DAS ABAS DEDICADAS */
@@ -409,7 +485,7 @@
       border-radius: 16px;
       padding: 28px;
       max-width: 700px;
-      margin: 0 auto 40px auto; /* Margem inferior garantida */
+      margin: 0 auto 40px auto;
       box-shadow: var(--card-shadow);
     }
 
@@ -422,7 +498,7 @@
       margin-bottom: 8px;
       color: var(--text-muted);
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .form-control {
@@ -457,7 +533,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 16px;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
     .stat-card {
@@ -468,6 +544,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
+      box-shadow: var(--card-shadow);
     }
 
     .stat-icon {
@@ -476,6 +553,7 @@
     }
 
     .stat-val {
+      font-family: var(--font-title);
       font-size: 1.5rem;
       font-weight: 700;
     }
@@ -485,32 +563,35 @@
       font-size: 0.85rem;
     }
 
-    /* VISUALIZADOR DE CANTIGA COM LEITURA MELHORADA */
+    /* ==========================================
+       VISUALIZADOR DE CANTIGA REDESENHADO (NOVO DESIGN)
+       ========================================== */
     .cantiga-view {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 16px;
       padding: 32px;
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto 40px auto;
       transition: var(--transition);
+      box-shadow: var(--card-shadow);
     }
 
     .cantiga-view.focus-mode {
-      background-color: #050505;
-      border-color: var(--gold-primary);
       padding: 40px;
+      max-width: 900px;
+      border-color: var(--gold-primary);
     }
 
     .cantiga-controls-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: var(--bg-dark);
-      padding: 10px 16px;
-      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.04);
+      padding: 8px 16px;
+      border-radius: 30px;
       border: 1px solid var(--border-color);
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       flex-wrap: wrap;
       gap: 12px;
     }
@@ -521,18 +602,90 @@
       gap: 8px;
     }
 
+    .btn-pill {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-white);
+      transition: var(--transition);
+    }
+
+    .btn-pill:hover {
+      border-color: var(--gold-primary);
+      color: var(--gold-primary);
+    }
+
+    .cantiga-header {
+      margin-bottom: 24px;
+    }
+
+    .cantiga-header .top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .cantiga-title-text {
+      font-family: var(--font-title);
+      color: var(--text-white);
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .cantiga-meta-details {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .cantiga-meta-details span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .cantiga-lyric {
       font-size: var(--lyric-font-size);
-      line-height: 1.9;
-      letter-spacing: 0.3px;
+      line-height: 1.85;
+      letter-spacing: 0.2px;
       white-space: pre-wrap;
-      margin: 20px 0;
-      padding: 24px;
+      margin: 24px 0;
+      padding: 32px 28px;
       background-color: var(--bg-dark);
       border-radius: 12px;
-      border-left: 5px solid var(--gold-primary);
-      font-weight: 400;
+      border-left: 4px solid var(--gold-primary);
+      font-weight: 500;
       word-break: break-word;
+      color: var(--text-white);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .cantiga-notes-card {
+      background-color: rgba(0,0,0,0.03);
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .cantiga-actions-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--border-color);
+      padding-top: 24px;
     }
 
     /* IMPRESSÃO / EXPORTAÇÃO PDF */
@@ -548,7 +701,7 @@
         overflow: visible !important;
       }
 
-      .app-container {
+      .app-container, .mobile-bottom-bar {
         display: none !important;
       }
 
@@ -604,12 +757,9 @@
       .header {
         padding: 0 16px;
       }
-      .search-bar {
-        width: 100%;
-      }
       .main-content {
         padding: 16px;
-        padding-bottom: 80px; /* Maior espaçamento no mobile por conta da barra do navegador */
+        padding-bottom: 90px;
       }
       .grid-cards {
         grid-template-columns: 1fr;
@@ -618,8 +768,11 @@
         padding: 20px;
         margin-bottom: 30px;
       }
+      .cantiga-title-text {
+        font-size: 1.7rem;
+      }
       .cantiga-lyric {
-        padding: 16px;
+        padding: 20px 16px;
       }
       .form-container {
         padding: 20px;
@@ -631,8 +784,8 @@
       .form-actions .btn {
         width: 100%;
       }
-      .btn-text-mobile-hide {
-        display: none;
+      .mobile-bottom-bar {
+        display: flex;
       }
     }
 
@@ -640,23 +793,19 @@
       .page-title {
         font-size: 1.3rem;
       }
-      .header-actions .btn {
-        padding: 8px 12px;
-      }
     }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    <!-- OVERLAY PARA MOBILE -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
       <div class="brand">
         <i class="fa-solid fa-fire-flame-curved"></i>
-        <h1>Cantigas de Macumba</h1>
+        <h1>Tucuvori</h1>
       </div>
       <ul class="nav-menu">
         <div class="nav-section-title">Navegação</div>
@@ -675,10 +824,10 @@
 
         <div class="nav-section-title">Ações Rápidas</div>
         <li class="nav-item" data-page="add-cantiga">
-          <button><i class="fa-solid fa-plus-circle" style="color: var(--gold-primary);"></i> Criar Ponto</button>
+          <button><i class="fa-solid fa-plus-circle" style="color: var(--gold-primary);"></i> Adicionar Novo Ponto</button>
         </li>
         <li class="nav-item" data-page="add-category">
-          <button><i class="fa-solid fa-folder-plus" style="color: var(--gold-primary);"></i> Criar Categoria</button>
+          <button><i class="fa-solid fa-folder-plus" style="color: var(--gold-primary);"></i> Adicionar Nova Categoria</button>
         </li>
 
         <div class="nav-section-title">Sistema</div>
@@ -697,33 +846,41 @@
 
     <!-- MAIN WRAPPER -->
     <div class="main-wrapper">
-      <!-- HEADER -->
       <header class="header">
         <div class="left-header-controls">
           <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu"><i class="fa-solid fa-bars"></i></button>
-          <button class="btn btn-secondary" id="globalBackBtn" onclick="window.goBack()" style="display: none;" title="Voltar para a página anterior">
-            <i class="fa-solid fa-arrow-left"></i> <span class="btn-text-mobile-hide">Voltar</span>
+          <button class="btn-back-header" onclick="window.goBack()" title="Voltar à página anterior">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Voltar</span>
           </button>
         </div>
         <div class="search-bar">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" id="globalSearch" placeholder="Pesquisar ponto, letra ou tag...">
         </div>
-        <div class="header-actions">
-          <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga')">
-            <i class="fa-solid fa-plus"></i> <span class="btn-text-mobile-hide">Novo Ponto</span>
-          </button>
-        </div>
       </header>
 
-      <!-- MAIN CONTENT AREA -->
       <main class="main-content" id="mainContent">
         <p style="color: var(--text-muted); text-align: center; margin-top: 40px;">Carregando dados do Firebase Realtime...</p>
       </main>
     </div>
   </div>
 
-  <!-- AREA RESERVADA PARA IMPRESSÃO / GERAR PDF -->
+  <nav class="mobile-bottom-bar">
+    <button onclick="window.goBack()">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Voltar</span>
+    </button>
+    <button onclick="window.navigateTo('add-cantiga')">
+      <i class="fa-solid fa-plus-circle"></i>
+      <span>Novo Ponto</span>
+    </button>
+    <button onclick="window.navigateTo('add-category')">
+      <i class="fa-solid fa-folder-plus"></i>
+      <span>Nova Categoria</span>
+    </button>
+  </nav>
+
   <div id="print-section"></div>
 
   <!-- FIREBASE IMPORTS (MÓDULOS ESM) -->
@@ -731,7 +888,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, push, remove, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAAW59AXhb8N6sJMXxuExF1sfuoxLa6As4",
       authDomain: "meu-escritorio-8c82e.firebaseapp.com",
@@ -742,17 +898,13 @@
       appId: "1:684347838633:web:2d92465d0a37ea185b19b8"
     };
 
-    // Inicialização do Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    /* ==========================================
-       ESTADO GLOBAL DA APLICAÇÃO
-       ========================================== */
     let state = {
       categories: [],
       cantigas: [],
-      settings: JSON.parse(localStorage.getItem('umbanda_settings')) || { theme: 'dark', fontSize: '16px', mainColor: '#d4af37' },
+      settings: JSON.parse(localStorage.getItem('umbanda_settings')) || { theme: 'light', fontSize: '16px', mainColor: '#a81c1c' },
       currentPage: 'home',
       currentCategoryFilter: null,
       currentCantigaId: null,
@@ -763,12 +915,8 @@
       isFocusMode: false
     };
 
-    // Pilha de navegação
     let pageHistory = [];
 
-    /* ==========================================
-       CONEXÃO EM TEMPO REAL (FIREBASE LISTENERS)
-       ========================================== */
     const categoriesRef = ref(db, 'categories');
     const cantigasRef = ref(db, 'cantigas');
 
@@ -780,7 +928,7 @@
           name: data[key].name || '',
           parentId: data[key].parentId || null,
           icon: data[key].icon || 'fa-fire',
-          color: data[key].color || '#d4af37'
+          color: data[key].color || '#a81c1c'
         }));
       } else {
         state.categories = [];
@@ -798,11 +946,8 @@
       render();
     });
 
-    /* ==========================================
-       UTILITÁRIOS & CONFIGURAÇÕES
-       ========================================== */
     function applySettings() {
-      document.body.setAttribute('data-theme', state.settings.theme);
+      document.documentElement.setAttribute('data-theme', state.settings.theme);
       document.documentElement.style.setProperty('--base-font-size', state.settings.fontSize);
       document.documentElement.style.setProperty('--lyric-font-size', `${state.lyricFontSizeRem}rem`);
       if (state.settings.mainColor) {
@@ -827,9 +972,6 @@
       return cat.name;
     }
 
-    /* ==========================================
-       NAVEGAÇÃO E RENDERIZAÇÃO
-       ========================================== */
     window.navigateTo = function(page, categoryId = null, recordHistory = true) {
       if (recordHistory && (state.currentPage !== page || state.currentCategoryFilter !== categoryId)) {
         pageHistory.push({
@@ -858,7 +1000,6 @@
       closeMobileMenu();
       render();
 
-      // Rolar para o topo do conteúdo
       const mainEl = document.getElementById('mainContent');
       if (mainEl) mainEl.scrollTop = 0;
     };
@@ -883,15 +1024,6 @@
     function render() {
       applySettings();
 
-      const globalBackBtn = document.getElementById('globalBackBtn');
-      if (globalBackBtn) {
-        if (pageHistory.length > 0 || state.currentPage !== 'home') {
-          globalBackBtn.style.display = 'inline-flex';
-        } else {
-          globalBackBtn.style.display = 'none';
-        }
-      }
-
       if (state.searchTerm.trim() !== '') {
         renderSearchResults();
         return;
@@ -912,22 +1044,22 @@
       }
     }
 
-    // --- HOME ---
     function renderHome() {
       const totalCategories = state.categories.length;
       const totalCantigas = state.cantigas.length;
-      const lastCantiga = state.cantigas.length > 0 
-        ? [...state.cantigas].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))[0] 
-        : null;
-
-      const mainCategories = state.categories
-        .filter(c => !c.parentId)
-        .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
+      
+      const recents = [...state.cantigas]
+        .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 10);
 
       mainContent.innerHTML = `
         <div class="page-title">
           <h2>Início</h2>
-          <button class="btn btn-primary" onclick="window.navigateTo('add-category')"><i class="fa-solid fa-folder-plus"></i> Nova Categoria</button>
+        </div>
+
+        <div class="app-info-card">
+          <h3><i class="fa-solid fa-circle-info"></i> Sobre o Aplicativo</h3>
+          <p>Bem-vindo ao <strong>Tucuvori: Pontos Cantados de Umbanda</strong>. Este sistema foi desenvolvido para organizar, consultar e gerenciar o acervo de pontos cantados, promovendo facilidade de acesso a letras, buscas rápidas por categorias ou palavras-chave e suporte à navegação intuitiva.</p>
         </div>
 
         <div class="stats-container">
@@ -942,27 +1074,19 @@
             <i class="fa-solid fa-music stat-icon"></i>
             <div>
               <div class="stat-val">${totalCantigas}</div>
-              <div class="stat-label">Cantigas Registradas</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <i class="fa-solid fa-clock-rotate-left stat-icon"></i>
-            <div>
-              <div class="stat-val" style="font-size:1rem; font-weight:600;">${lastCantiga ? lastCantiga.title : 'Nenhuma'}</div>
-              <div class="stat-label">Última Adicionada</div>
+              <div class="stat-label">Pontos Adicionados</div>
             </div>
           </div>
         </div>
 
-        <h3 style="margin-bottom: 16px; font-family: var(--font-title); color: var(--gold-primary);">Categorias Principais</h3>
-        ${mainCategories.length === 0 ? '<p style="color: var(--text-muted);">Nenhuma categoria cadastrada.</p>' : ''}
+        <h3 style="margin-bottom: 16px; font-family: var(--font-title); color: var(--gold-primary);">Últimos 10 Pontos Adicionados</h3>
+        ${recents.length === 0 ? '<p style="color: var(--text-muted);">Nenhum ponto adicionado recentemente.</p>' : ''}
         <div class="grid-cards">
-          ${mainCategories.map(cat => renderCategoryCardHtml(cat)).join('')}
+          ${recents.map(c => renderCantigaCardHtml(c)).join('')}
         </div>
       `;
     }
 
-    // --- CATEGORIAS ---
     function renderCategories() {
       const mainCategories = state.categories
         .filter(c => !c.parentId)
@@ -972,7 +1096,7 @@
         <div class="page-title">
           <h2>Categorias</h2>
           <button class="btn btn-primary" onclick="window.navigateTo('add-category')">
-            <i class="fa-solid fa-plus"></i> Nova Categoria
+            <i class="fa-solid fa-plus"></i> Adicionar Nova Categoria
           </button>
         </div>
         ${mainCategories.length === 0 ? '<p style="color: var(--text-muted);">Nenhuma categoria cadastrada.</p>' : ''}
@@ -1009,7 +1133,6 @@
       `;
     }
 
-    // --- DETALHE DA CATEGORIA ---
     function renderCategoryDetail(catId) {
       const category = state.categories.find(c => c.id === catId);
       if(!category) return window.navigateTo('categories');
@@ -1029,9 +1152,9 @@
             <h2>${category.name}</h2>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn btn-secondary" onclick="window.exportCategoryToPDF('${catId}')"><i class="fa-solid fa-file-pdf"></i>PDF</button>
-            <button class="btn btn-secondary" onclick="window.navigateTo('add-category', '${catId}')"><i class="fa-solid fa-folder-plus"></i>Subcategoria</button>
-            <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga', '${catId}')"><i class="fa-solid fa-plus"></i>Ponto</button>
+            <button class="btn btn-secondary" onclick="window.exportCategoryToPDF('${catId}')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+            <button class="btn btn-secondary" onclick="window.navigateTo('add-category', '${catId}')"><i class="fa-solid fa-folder-plus"></i> Subcategoria</button>
+            <button class="btn btn-primary" onclick="window.navigateTo('add-cantiga', '${catId}')"><i class="fa-solid fa-plus"></i> Ponto</button>
           </div>
         </div>
 
@@ -1079,7 +1202,6 @@
       `;
     }
 
-    // --- FAVORITOS E RECENTES ---
     function renderFavorites() {
       const favs = state.cantigas.filter(c => c.favorite);
       mainContent.innerHTML = `
@@ -1098,9 +1220,6 @@
       `;
     }
 
-    /* ==========================================
-       ABA DEDICADA: CRIAR / EDITAR PONTO
-       ========================================== */
     function renderAddCantiga() {
       const cantigaToEdit = state.editingCantigaId ? state.cantigas.find(c => c.id === state.editingCantigaId) : null;
       const targetCategoryId = cantigaToEdit ? cantigaToEdit.categoryId : state.currentCategoryFilter;
@@ -1111,7 +1230,7 @@
 
       mainContent.innerHTML = `
         <div class="page-title">
-          <h2>${cantigaToEdit ? 'Editar Ponto' : 'Criar Novo Ponto'}</h2>
+          <h2>${cantigaToEdit ? 'Editar Ponto' : 'Adicionar Novo Ponto'}</h2>
         </div>
         <div class="form-container">
           <form id="standaloneFormCantiga">
@@ -1189,9 +1308,6 @@
       }, 0);
     }
 
-    /* ==========================================
-       ABA DEDICADA: CRIAR / EDITAR CATEGORIA
-       ========================================== */
     function renderAddCategory() {
       const catToEdit = state.editingCategoryId ? state.categories.find(c => c.id === state.editingCategoryId) : null;
       const targetParentId = catToEdit ? catToEdit.parentId : state.currentCategoryFilter;
@@ -1202,7 +1318,7 @@
 
       mainContent.innerHTML = `
         <div class="page-title">
-          <h2>${catToEdit ? 'Editar Categoria' : 'Criar Categoria / Subcategoria'}</h2>
+          <h2>${catToEdit ? 'Editar Categoria' : 'Adicionar Nova Categoria'}</h2>
         </div>
         <div class="form-container">
           <form id="standaloneFormCategory">
@@ -1276,7 +1392,7 @@
 
             <div class="form-group">
               <label>Cor de Destaque</label>
-              <input type="color" id="catColor" class="form-control" value="${catToEdit ? catToEdit.color : '#d4af37'}" style="height: 45px; padding: 2px;">
+              <input type="color" id="catColor" class="form-control" value="${catToEdit ? catToEdit.color : '#a81c1c'}" style="height: 45px; padding: 2px;">
             </div>
 
             <div class="form-actions">
@@ -1317,55 +1433,68 @@
       }, 0);
     }
 
-    // --- VISUALIZAR CANTIGA ---
+    /* ==========================================
+       VISUALIZAR CANTIGA (NOVO LAYOUT REDESENHADO)
+       ========================================== */
     function renderCantigaView(cantigaId) {
       const cantiga = state.cantigas.find(c => c.id === cantigaId);
       if(!cantiga) return window.navigateTo('home');
 
       mainContent.innerHTML = `
         <div class="cantiga-view ${state.isFocusMode ? 'focus-mode' : ''}">
+          <!-- Barra de Acessibilidade / Controles Superior -->
           <div class="cantiga-controls-bar">
             <div class="font-size-controls">
-              <span style="font-size: 0.85rem; color: var(--text-muted); font-weight:600;">Tamanho do Texto:</span>
-              <button class="btn btn-secondary" onclick="window.changeLyricFontSize(-0.1)" title="Diminuir texto" style="padding: 4px 10px;"><i class="fa-solid fa-minus"></i></button>
-              <button class="btn btn-secondary" onclick="window.changeLyricFontSize(0.1)" title="Aumentar texto" style="padding: 4px 10px;"><i class="fa-solid fa-plus"></i></button>
-              <button class="btn btn-secondary" onclick="window.resetLyricFontSize()" title="Restaurar tamanho" style="padding: 4px 10px; font-size:0.8rem;">Reset</button>
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Texto:</span>
+              <button class="btn-pill" onclick="window.changeLyricFontSize(-0.1)" title="Diminuir texto"><i class="fa-solid fa-minus"></i></button>
+              <button class="btn-pill" onclick="window.changeLyricFontSize(0.1)" title="Aumentar texto"><i class="fa-solid fa-plus"></i></button>
+              <button class="btn-pill" onclick="window.resetLyricFontSize()" title="Restaurar tamanho">Reset</button>
             </div>
             <div>
-              <button class="btn ${state.isFocusMode ? 'btn-primary' : 'btn-secondary'}" onclick="window.toggleFocusMode()" style="padding: 6px 12px; font-size: 0.85rem;">
-                <i class="fa-solid ${state.isFocusMode ? 'fa-compress' : 'fa-expand'}"></i> ${state.isFocusMode ? 'Sair do Modo Foco' : 'Modo Foco'}
+              <button class="btn-pill" onclick="window.toggleFocusMode()" style="background: ${state.isFocusMode ? 'var(--gold-primary)' : 'transparent'}; color: ${state.isFocusMode ? '#fff' : 'inherit'}">
+                <i class="fa-solid ${state.isFocusMode ? 'fa-compress' : 'fa-expand'}"></i> ${state.isFocusMode ? 'Sair do Foco' : 'Modo Foco'}
               </button>
             </div>
           </div>
 
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 16px;">
-            <div>
+          <!-- Cabecalho do Ponto -->
+          <div class="cantiga-header">
+            <div class="top-meta">
               <span class="tag">${getCantigaCategoryName(cantiga.categoryId)}</span>
-              <h2 style="font-family: var(--font-title); color: var(--gold-primary); font-size: 2rem; margin-top: 8px;">${cantiga.title}</h2>
+              <button onclick="window.toggleFavorite('${cantiga.id}')" style="font-size: 1.4rem; color: ${cantiga.favorite ? 'var(--gold-primary)' : 'var(--text-muted)'}" title="Favoritar">
+                <i class="${cantiga.favorite ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+              </button>
             </div>
-            <button onclick="window.toggleFavorite('${cantiga.id}')" style="font-size: 1.6rem; color: ${cantiga.favorite ? 'var(--gold-primary)' : 'var(--text-muted)'}" title="Favoritar">
-              <i class="${cantiga.favorite ? 'fa-solid' : 'fa-regular'} fa-star"></i>
-            </button>
+
+            <h1 class="cantiga-title-text">${cantiga.title}</h1>
+
+            <div class="cantiga-meta-details">
+              <span><i class="fa-regular fa-calendar"></i> Cadastrado em: ${formatDate(cantiga.createdAt)}</span>
+              ${cantiga.updatedAt ? `<span><i class="fa-solid fa-rotate"></i> Atualizado em: ${formatDate(cantiga.updatedAt)}</span>` : ''}
+            </div>
+
+            ${cantiga.tags && cantiga.tags.length > 0 ? `
+              <div style="display:flex; gap: 6px; flex-wrap: wrap; margin-top: 12px;">
+                ${cantiga.tags.map(t => `<span style="background: rgba(0,0,0,0.05); color: var(--text-muted); font-size: 0.75rem; padding: 2px 10px; border-radius: 12px; border: 1px solid var(--border-color);">#${t.trim()}</span>`).join('')}
+              </div>
+            ` : ''}
           </div>
 
-          <div style="font-size: 0.85rem; color: var(--text-muted); display:flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;">
-            <span><i class="fa-regular fa-calendar"></i> Cadastrado em: ${formatDate(cantiga.createdAt)}</span>
-            ${cantiga.updatedAt ? `<span><i class="fa-solid fa-rotate"></i> Atualizado em: ${formatDate(cantiga.updatedAt)}</span>` : ''}
-          </div>
+          <!-- Bloco Principal da Letra -->
+          <div class="cantiga-lyric">${cantiga.lyrics}</div>
 
-          ${cantiga.tags && cantiga.tags.length > 0 ? `
-            <div style="display:flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;">
-              ${cantiga.tags.map(t => `<span style="background: var(--border-color); font-size:0.75rem; padding: 2px 8px; border-radius: 12px;">#${t.trim()}</span>`).join('')}
+          <!-- Observações (se houver) -->
+          ${cantiga.notes ? `
+            <div class="cantiga-notes-card">
+              <i class="fa-solid fa-circle-info" style="color: var(--gold-primary); margin-right: 6px;"></i>
+              <strong>Observação:</strong> ${cantiga.notes}
             </div>
           ` : ''}
 
-          <div class="cantiga-lyric">${cantiga.lyrics}</div>
-
-          ${cantiga.notes ? `<p style="font-style: italic; color: var(--text-muted); margin-bottom: 24px;"><strong>Obs:</strong> ${cantiga.notes}</p>` : ''}
-
-          <div style="display:flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 20px;">
+          <!-- Ações Inferiores -->
+          <div class="cantiga-actions-bar">
             <button class="btn btn-primary" onclick="window.editCantiga('${cantiga.id}')"><i class="fa-solid fa-pen"></i> Editar</button>
-            <button class="btn btn-secondary" onclick="window.copyToClipboard(\`${cantiga.lyrics.replace(/`/g, '\\`')}\`)"><i class="fa-solid fa-copy"></i> Copiar</button>
+            <button class="btn btn-secondary" onclick="window.copyToClipboard(\`${cantiga.lyrics.replace(/`/g, '\\`')}\`)"><i class="fa-solid fa-copy"></i> Copiar Letra</button>
             <button class="btn btn-secondary" onclick="window.printCantiga('${cantiga.id}')"><i class="fa-solid fa-print"></i> Imprimir</button>
             <button class="btn btn-secondary" onclick="window.shareCantiga('${cantiga.id}')"><i class="fa-solid fa-share-nodes"></i> Compartilhar</button>
           </div>
@@ -1373,7 +1502,6 @@
       `;
     }
 
-    // AJUSTES DINÂMICOS DE LEITURA
     window.changeLyricFontSize = function(delta) {
       state.lyricFontSizeRem = Math.max(0.9, Math.min(2.5, state.lyricFontSizeRem + delta));
       applySettings();
@@ -1389,7 +1517,6 @@
       render();
     };
 
-    // --- PESQUISA ---
     function renderSearchResults() {
       const term = state.searchTerm.toLowerCase();
       const results = state.cantigas.filter(c => 
@@ -1409,7 +1536,6 @@
       `;
     }
 
-    // --- BACKUP E CONFIGURAÇÕES ---
     function renderBackup() {
       mainContent.innerHTML = `
         <div class="page-title"><h2>Backup e Restauração</h2></div>
@@ -1449,8 +1575,8 @@
           <div class="form-group">
             <label>Tema Visual</label>
             <select class="form-control" id="themeSelect">
-              <option value="dark" ${state.settings.theme === 'dark' ? 'selected' : ''}>Modo Escuro (Padrão)</option>
-              <option value="light" ${state.settings.theme === 'light' ? 'selected' : ''}>Modo Claro</option>
+              <option value="light" ${state.settings.theme === 'light' ? 'selected' : ''}>Modo Claro (Papel Velho)</option>
+              <option value="dark" ${state.settings.theme === 'dark' ? 'selected' : ''}>Modo Escuro</option>
             </select>
           </div>
           <div class="form-group">
@@ -1463,13 +1589,7 @@
           </div>
           <div class="form-group">
             <label>Cor Principal de Destaque</label>
-            <input type="color" class="form-control" id="colorPicker" value="${state.settings.mainColor || '#d4af37'}" style="height: 40px; padding:2px;">
-          </div>
-          <hr style="border-color: var(--border-color); margin: 24px 0;">
-          <div style="border: 1px solid var(--red-dark); padding: 16px; border-radius: 8px; background-color: rgba(122, 0, 16, 0.1);">
-            <h4 style="color: var(--red-hover); margin-bottom: 8px;">Zona de Perigo</h4>
-            <p style="font-size:0.85rem; color: var(--text-muted); margin-bottom: 12px;">Esta ação limpa permanentemente todos os dados armazenados no banco de dados Firebase.</p>
-            <button class="btn btn-danger" onclick="window.clearAllData()"><i class="fa-solid fa-triangle-exclamation"></i> Limpar Banco Firebase</button>
+            <input type="color" class="form-control" id="colorPicker" value="${state.settings.mainColor || '#a81c1c'}" style="height: 40px; padding:2px;">
           </div>
         </div>
       `;
@@ -1481,9 +1601,7 @@
       }, 0);
     }
 
-    /* ==========================================
-       OPERAÇÕES FIREBASE (CRUD) & PDF
-       ========================================== */
+    /* OPERAÇÕES CRUD & AUXILIARES */
     window.editCategory = function(id) {
       state.editingCategoryId = id;
       window.navigateTo('add-category');
@@ -1551,7 +1669,7 @@
       const printArea = document.getElementById('print-section');
       let html = `
         <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="font-size: 2.2rem; margin-bottom: 5px; font-family: 'Cinzel', serif;">Templo de Umbanda Caboclo Ubirajara e Vovó Rita</h1>
+          <h1 style="font-size: 2.2rem; margin-bottom: 5px; font-family: 'Space Grotesk', sans-serif;">Tucuvori: Pontos Cantados de Umbanda</h1>
           <h2 style="font-size: 1.5rem; color: #444;">Categoria: ${category.name}</h2>
           <p style="font-size: 0.9rem; color: #666;">Gerado em ${new Date().toLocaleDateString('pt-BR')}</p>
         </div>
@@ -1612,7 +1730,7 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObject, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `firebase_cancioneiro_backup_${new Date().toISOString().slice(0,10)}.json`);
+      downloadAnchor.setAttribute("download", `tucuvori_backup_${new Date().toISOString().slice(0,10)}.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
@@ -1662,17 +1780,6 @@
       applySettings();
     }
 
-    window.clearAllData = function() {
-      if(confirm('ATENÇÃO: Esta ação apaga permanentemente TODAS as categorias e cantigas do Firebase! Deseja continuar?')) {
-        set(ref(db, '/'), null);
-        alert('Banco Firebase resetado com sucesso.');
-        window.navigateTo('home');
-      }
-    };
-
-    /* ==========================================
-       EVENT LISTENERS E INICIALIZAÇÃO
-       ========================================== */
     document.addEventListener('DOMContentLoaded', () => {
       applySettings();
 
